@@ -265,14 +265,18 @@ def compare_errors(names, nn, pp, outliers_coef, alpha_vals, n_samples=100):
 
 
 
-sample_size = 10 # number of samples to take the average of the errors and time 
-np.random.seed(0)
+def main(n_samples=10, seed=0):
+    print('Running table1_and2_error_compaison.py')
+    np.random.seed(seed)
+    # comaparison of different methods for different outlier levels with specific datasets #
+    #--------------------------------------------------------------------------------------#
+    names = [ "A", "B", "C", "D"]
+    n_vals = [200, 300, 400, 1000] #[100, 400]
+    p_vals = [5, 20, 50, 100]#[5, 20]
+    out_coefs_vals = [0.10, 0.4 ]
+    alpha_vals_vals = [0.75, 0.5]
+    compare_errors(names, n_vals, p_vals, out_coefs_vals, alpha_vals_vals, n_samples=n_samples)
+    print('Completed table1_and2_error_compaison.py')
+if __name__ == "__main__":
+    main()
 
-# comaparison of different methods for different outlier levels with specific datasets #
-#--------------------------------------------------------------------------------------#
-names = [ "A", "B", "C", "D"]
-n_vals = [200, 300, 400, 1000] #[100, 400]
-p_vals = [5, 20, 50, 100]#[5, 20]
-out_coefs_vals = [0.10, 0.4 ]
-alpha_vals_vals = [0.75, 0.5]
-compare_errors(names, n_vals, p_vals, out_coefs_vals, alpha_vals_vals, n_samples=sample_size)

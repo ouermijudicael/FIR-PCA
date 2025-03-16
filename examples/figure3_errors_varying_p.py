@@ -209,16 +209,28 @@ def compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=100):
             plt.savefig(f'figures/KLDivergence_p_{name}_{out_types[i_out]}_n{n}.pdf', bbox_inches="tight")
             plt.show()
 
+def main(n_samples=10, seed=10):
+    print("Running figure3_errors_varying_p.py")
+    np.random.seed(seed)
+    names = ["A"]
+    nn = [1000]
+    pp = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+    outliers_coef = [0.40]
+    alpha_val = 0.50
+    compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=n_samples)
+    print("Completed running figure3_errors_varying_p.py")
 
-sample_size = 10 # number of samples to take the average of the errors and time 
-np.random.seed(0)
+if __name__ == "__main__":
+    main()
+# sample_size = 10 # number of samples to take the average of the errors and time 
+# np.random.seed(0)
 
-# # comparison of different methods for different p values #
-# #--------------------------------------------------------#
-names = ["A"]
-nn = [1000]
-pp = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
-outliers_coef = [0.40]
-alpha_val = 0.50
-compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=sample_size)
+# # # comparison of different methods for different p values #
+# # #--------------------------------------------------------#
+# names = ["A"]
+# nn = [1000]
+# pp = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+# outliers_coef = [0.40]
+# alpha_val = 0.50
+# compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=sample_size)
 

@@ -199,15 +199,29 @@ def compare_noise_levels(names, nn, pp, outliers_coefs, alpah_vals, n_sample=100
             ax.legend()
             plt.savefig(f'figures/KLDivergence_Percentage_Outliers_{out_type}_p{p}_n{n}.pdf', bbox_inches='tight')
 
-sample_size = 10 # number of samples to take the average of the errors and time 
-np.random.seed(0)
+def main(n_sample=10, seed=0):
+    print("Running figure4_outlier_percentage.py")
+    np.random.seed(seed)
+    names = ["A"]
+    nn = [1000]
+    pp = [5]
+    outliers_coefs = [0.0, 0.10, 0.20, 0.30, 0.40]
+    alpha_vals = [0.5]
+    compare_noise_levels(names, nn, pp, outliers_coefs, alpha_vals, n_sample=n_sample)
+    print("Done running figure4_outlier_percentage.py")
 
-# comparison of noise level of different methods for different datasets #
-#-----------------------------------------------------------------------#
-names = ["A"]
-nn = [1000]
-pp = [5]
-outliers_coefs = [0.0, 0.10, 0.20, 0.30, 0.40]
-alpha_vals = [0.5]
-compare_noise_levels(names, nn, pp, outliers_coefs, alpha_vals, n_sample=sample_size)
+if __name__ == "__main__":
+    main()
+
+# sample_size = 10 # number of samples to take the average of the errors and time 
+# np.random.seed(0)
+
+# # comparison of noise level of different methods for different datasets #
+# #-----------------------------------------------------------------------#
+# names = ["A"]
+# nn = [1000]
+# pp = [5]
+# outliers_coefs = [0.0, 0.10, 0.20, 0.30, 0.40]
+# alpha_vals = [0.5]
+# compare_noise_levels(names, nn, pp, outliers_coefs, alpha_vals, n_sample=sample_size)
 
