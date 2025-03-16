@@ -1,22 +1,7 @@
-from depth.multivariate import projection, L2
 import numpy as np
-
-import projection_depth as pd
-
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-
-from scipy.spatial.distance import cdist
 from scipy.stats import chi2, norm
-import scipy as sp
-
-import time
-
 from robpy.univariate import UnivariateMCD
 from robpy.covariance import DetMCD
-
-
-import numpy as np
 
 def get_score_distance_cutoff(alpha, k):
     return np.sqrt(float(chi2.ppf(alpha, k)))
