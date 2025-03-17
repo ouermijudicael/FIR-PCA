@@ -49,16 +49,6 @@ def DetMCD_PCA(X, alpha=0.75, reweighting=True):
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
     r_80 = np.argmax(explained_variance_ratio > 0.8) + 1
-    # print(f'explained_variance_ratio: {explained_variance_ratio}')
-    # print(f'r_80: {r_80}')
-    # # compute mahalanobis distance
-    # mu2 = np.mean(Z2[H1, :], axis=0)
-    # C2 = np.cov(Z2[H1, :].T)
-    # C2_inv = np.linalg.inv(C2)
-    # V2, d2, _ = np.linalg.svd(C2, full_matrices=False)
-    # sd = np.zeros(n)
-    # for i in range(n):
-    #     sd[i] = sp.spatial.distance.mahalanobis(Z2[i, :], mu2, C2_inv)
     # # resize mu1 to p
     tmp = np.zeros(r0)
     tmp[:r1] = mu1

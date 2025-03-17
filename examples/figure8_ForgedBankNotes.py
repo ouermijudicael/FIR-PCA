@@ -10,6 +10,7 @@ sys.path.append(parent_dir)
 from utils import create_figures_directory
 from FIR_PCA import FIR_PCA
 from FDB import FDB_PCA
+from DetMCD_PCA import DetMCD_PCA
 from robpy.pca import ROBPCA
 from matplotlib import pyplot as plt
 
@@ -50,10 +51,12 @@ def main():
     fdb_H_od = np.intersect1d(np.where(fdb_sd < fdb_sd_cuttoff)[0], np.where(fdb_od > fdb_od_cuttoff)[0])
     fdb_H_sd_od = np.intersect1d(np.where(fdb_sd > fdb_sd_cuttoff)[0], np.where(fdb_od > fdb_od_cuttoff)[0])
 
-    robpca = ROBPCA().fit(X)
-    # print("robpca.explained_variance_ratio_:", robpca.explained_variance_ratio_)
-    robpca_scores = robpca.transform(X)
-    score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(X, return_distances=True)
+    # robpca = ROBPCA().fit(X)
+    # # print("robpca.explained_variance_ratio_:", robpca.explained_variance_ratio_)
+    # robpca_scores = robpca.transform(X)
+    # score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(X, return_distances=True)
+    robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X, alpha=0.75)  
+
     # get indices where score_distances > score_cutoff and orthogonal_distances < od_cutoff
     robpca_H_sd = np.intersect1d(np.where(score_distances > score_cutoff)[0], np.where(orthogonal_distances < od_cutoff)[0])
     robpca_H_od = np.intersect1d(np.where(score_distances < score_cutoff)[0], np.where(orthogonal_distances > od_cutoff)[0])

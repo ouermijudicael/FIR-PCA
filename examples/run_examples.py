@@ -19,16 +19,16 @@ import table3_batch_size
 seed = 0
 n_samples = 10
 
-figure1_illustration.main()
-figure2_robustness_plots.main()
-figure3_errors_varying_p.main(n_samples, seed)
-figure4_outlier_percentage.main(n_samples, seed)
+# figure1_illustration.main()
+# figure2_robustness_plots.main()
+# figure3_errors_varying_p.main(n_samples, seed)
+# figure4_outlier_percentage.main(n_samples, seed)
 figure5_score_comparison.main()
-figure6_performance.main(n_samples, seed)
+# figure6_performance.main(n_samples, seed)
 
 figure7_octane.main()
 figure8_ForgedBankNotes.main()
 figure9_topGear.main()
 
-table1_and2_error_compaison.main(n_samples, seed)
-table3_batch_size.main(n_samples, seed)
+# table1_and2_error_compaison.main(n_samples, seed)
+# table3_batch_size.main(n_samples, seed)

@@ -9,6 +9,7 @@ from FIR_PCA import FIR_PCA
 from FDB import FDB_PCA
 from robpy.pca import ROBPCA
 from C_PCA import C_PCA
+from DetMCD_PCA import DetMCD_PCA
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -55,11 +56,13 @@ def main():
     fir_H_od = np.intersect1d(np.where(fir_sd < fir_sd_cuttoff)[0], np.where(fir_od > fir_od_cutoff)[0])
     fir_H_sd_od = np.intersect1d(np.where(fir_sd > fir_sd_cuttoff)[0], np.where(fir_od > fir_od_cutoff)[0])
 
-    robpca = ROBPCA().fit(X_proj)
-    robpca_scores = robpca.transform(X_proj)
-    score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(X_proj, return_distances=True)
-    robpca = ROBPCA(k_min_var_explained=0.98).fit(X_proj)
-    robpca_scores = robpca.transform(X_proj)
+    # robpca = ROBPCA().fit(X_proj)
+    # robpca_scores = robpca.transform(X_proj)
+    # score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(X_proj, return_distances=True)
+    # robpca = ROBPCA(k_min_var_explained=0.98).fit(X_proj)
+    # robpca_scores = robpca.transform(X_proj)
+    robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X_proj, alpha=0.75)  
+    
     # get indices where score_distances > score_cutoff and orthogonal_distances < od_cutoff
     robpca_H_sd = np.intersect1d(np.where(score_distances > score_cutoff)[0], np.where(orthogonal_distances < od_cutoff)[0])
     robpca_H_od = np.intersect1d(np.where(score_distances < score_cutoff)[0], np.where(orthogonal_distances > od_cutoff)[0])

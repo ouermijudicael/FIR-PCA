@@ -18,13 +18,7 @@ def C_PCA(X):
     explained_variance = pca.explained_variance_
     explained_variance_ratio = explained_variance.cumsum() / np.sum(explained_variance)
 
-    print(f'scores.shape: {scores.shape}')
-    print(f'pca.mean_.shape: {pca.mean_.shape}')
-    print(f'pca.explained_variance_.shape: {pca.explained_variance_.shape}')
-    print(f'pca.components_.shape: {pca.components_.shape}')
-
     r_80 = np.where(explained_variance_ratio > 0.8)[0][0] + 1
-    print("r_80:", r_80)
     sd = np.sqrt(np.sum(np.square(scores[:,:r_80])/explained_variance[:r_80], axis=1))
     od = np.zeros(n)
     for i in range(n):

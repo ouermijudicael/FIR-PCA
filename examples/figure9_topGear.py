@@ -4,6 +4,7 @@ from robpy.pca import ROBPCA
 import numpy as np
 from C_PCA import C_PCA
 from FDB import FDB_PCA
+from DetMCD_PCA import DetMCD_PCA
 import sys
 import os
 # get and add path to the parent directory
@@ -65,9 +66,11 @@ def main():
     fir_H_od = np.setdiff1d( np.where(fir_od > fir_od_cutoff), np.where(fir_sd > fir_sd_cuttoff) )
     fir_H_sd_od = np.intersect1d( np.where(fir_sd > fir_sd_cuttoff), np.where(fir_od > fir_od_cutoff) )
 
-    robpca = ROBPCA().fit(scaled_data)
-    robpca_scores = robpca.transform(scaled_data)
-    score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(scaled_data, return_distances=True)
+    # robpca = ROBPCA().fit(scaled_data)
+    # robpca_scores = robpca.transform(scaled_data)
+    # score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(scaled_data, return_distances=True)
+    robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X, alpha=0.75)  
+
     robpca_H_sd = np.setdiff1d( np.where(score_distances > score_cutoff), np.where(orthogonal_distances > od_cutoff) )
     robpca_H_od = np.setdiff1d( np.where(orthogonal_distances > od_cutoff), np.where(score_distances > score_cutoff) )
     robpca_H_sd_od = np.intersect1d( np.where(score_distances > score_cutoff), np.where(orthogonal_distances > od_cutoff) )

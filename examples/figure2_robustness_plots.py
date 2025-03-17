@@ -31,6 +31,7 @@ def main():
         # FDB
         fdb_mu, fdb_sigma, fdb_H = FDB(X1, alpha=0.5, depth='proj')
         fdb_mu2, fdb_sigma2, fdb_H2 = FDB(X2, alpha=0.5, depth='proj')
+        
         fir_mu,firb_cov, fir_H = FIR(X1, alpha=0.5)
         fir_mu2, fir_cov2, fir_H2 = FIR(X2, alpha=0.5)
     
