@@ -1,6 +1,4 @@
 import numpy as np
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
 import os
 
 def create_figures_directory():
