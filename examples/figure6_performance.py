@@ -211,23 +211,3 @@ def main(n_samples=10, seed=0):
 
 if __name__ == "__main__":
     main()
-# sample_size = 10 # number of samples to take the average of the errors and time 
-# np.random.seed(0)
-# # comparison of different methods for different datasets  performance p #
-# # #-----------------------------------------------------------------------#
-# names = ["A"]
-# nn = [1000]
-# pp = [25, 50, 75, 100, 125, 150, 175, 200]
-# outliers_coef = [0.15]
-# alpha_val = 0.75
-# compare_performance_p(names, nn, pp, outliers_coef, alpha_val, n_samples=sample_size)
-
-# # # comparison of different methods for different datasets  performance n #
-# # #-----------------------------------------------------------------------#
-# names = ["A"]
-# nn = [500, 750, 1000, 1250, 1500, 1750, 2000]
-# # pp = [5]
-# outliers_coef = [0.10]
-# alpha_val = 0.75
-# compare_performance_n(names, nn, [5], outliers_coef, alpha_val, n_samples= sample_size)
-# compare_performance_n(names, nn, [40], outliers_coef, alpha_val, n_samples= sample_size)

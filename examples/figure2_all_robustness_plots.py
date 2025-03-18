@@ -93,7 +93,7 @@ for p in p_vals:
         plt.legend()
         # plt.title('FDB')
         plt.savefig(f'figures/FDB_point_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()
 
         plt.figure()
         plt.scatter(X1[:, p-2], X1[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -104,7 +104,7 @@ for p in p_vals:
         plt.legend()
         # plt.title('FIR')
         plt.savefig(f'figures/FIR_point_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()
 
         plt.figure()
         plt.scatter(X1[:, p-2], X1[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -115,7 +115,7 @@ for p in p_vals:
         plt.legend()
         # plt.title('DetMCD')
         plt.savefig(f'figures/DetMCD_point_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()
 
         plt.figure()
         plt.scatter(X2[:, p-2], X2[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -126,7 +126,7 @@ for p in p_vals:
         plt.legend()
         # plt.title('FDB')
         plt.savefig(f'figures/FDB_cluster_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()
 
         plt.figure()
         plt.scatter(X2[:, p-2], X2[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -137,7 +137,7 @@ for p in p_vals:
         plt.legend()
         # plt.title('FIR')
         plt.savefig(f'figures/FIR_cluster_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()
 
         plt.figure()
         plt.scatter(X2[:, p-2], X2[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -148,4 +148,4 @@ for p in p_vals:
         plt.legend()
         # plt.title('DetMCD')
         plt.savefig(f'figures/DetMCD_cluster_outliers_{p}.pdf', bbox_inches='tight')
-        plt.show()
+        # plt.show()

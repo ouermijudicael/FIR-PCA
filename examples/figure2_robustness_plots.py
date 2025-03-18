@@ -57,7 +57,7 @@ def main():
             plt.legend()
             # plt.title('FDB')
             plt.savefig(f'figures/FDB_point_outliers_{p}.pdf', bbox_inches='tight')
-            plt.show()
+            # plt.show()
 
             plt.figure()
             plt.scatter(X1[:, p-2], X1[:, p-1], c=(0,0,0,1), s=s_size, label='data')
@@ -88,7 +88,7 @@ def main():
             plt.legend()
             # plt.title('FIR')
             plt.savefig(f'figures/FIR_cluster_outliers_{p}.pdf', bbox_inches='tight')
-            plt.show()
+            # plt.show()
     print('Completed figure2_robustness_plots.py')
 
 if __name__ == '__main__':

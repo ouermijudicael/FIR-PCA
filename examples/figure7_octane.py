@@ -90,7 +90,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_FIR_PCA_outlier_map.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     plt.figure()
     plt.scatter(score_distances, orthogonal_distances, label='ROBPCA', c='k', s=ms)
@@ -105,7 +105,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_ROBPCA_outlier_map.pdf', bbox_inches='tight')
-    plt.show()  
+    # plt.show()  
 
     plt.figure()
     plt.scatter(fdb_sd, fdb_od, label='FDB-PCA', c='k', s=ms)
@@ -120,7 +120,7 @@ def main():
     # plt.legend()
     # save plot 
     plt.savefig('figures/octane_FDB_PCA_outlier_map.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     plt.figure()
     plt.scatter(pca_sd, pca_od, label='C-PCA', c='k', s=ms)
@@ -135,7 +135,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_C_PCA_outlier_map.pdf', bbox_inches='tight')
-    plt.show()  
+    # plt.show()  
 
 
     plt.figure()
@@ -148,7 +148,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_FIR_PCA_first_two_principal_components.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     plt.figure()
     plt.scatter(robpca_scores[:,0], robpca_scores[:,1], color='k', s=ms, label='ROBPCA')
@@ -160,7 +160,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_ROBPCA_first_two_principal_components.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     plt.figure()
     plt.scatter(fdb_scores[:,0], fdb_scores[:,1], c='k', s=ms, label='FDB-PCA')
@@ -172,7 +172,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_FDB_PCA_first_two_principal_components.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     plt.figure()
     plt.scatter(pca_scores[:,0], pca_scores[:,1], c='k', s=ms, label='C-PCA')
@@ -184,7 +184,7 @@ def main():
     # plt.legend()
     # save plot
     plt.savefig('figures/octane_C_PCA_first_two_principal_components.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
     print('Completed figure7_octane.py')
 
 if __name__ == '__main__':

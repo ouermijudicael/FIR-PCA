@@ -118,7 +118,7 @@ def main():
     # plt.legend()
     plt.savefig('figures/FDB_PCA.pdf', bbox_inches='tight')
 
-    plt.show()
+    # plt.show()
     print('Done running figure5_score_comparison.py')
 
 if __name__ == '__main__':

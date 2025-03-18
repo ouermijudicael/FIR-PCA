@@ -45,7 +45,7 @@ def main():
     plt.ylabel('y')
     plt.legend()
     plt.savefig('figures/data_space_0.pdf', bbox_inches='tight')
-    plt.show()
+    # plt.show()
 
     # initialize incremental PCA
     ipca = IncrementalPCA(n_components=2, batch_size=batch_size)
@@ -87,7 +87,7 @@ def main():
             plt.ylabel('y')
             plt.legend()
             plt.savefig(f'figures/pca_space_{count}.pdf', bbox_inches='tight')
-            plt.show()
+            # plt.show()
             count += 1
 
             plt.figure()
@@ -97,7 +97,7 @@ def main():
             plt.ylabel('y')
             plt.legend()
             plt.savefig(f'figures/data_space_{count}.pdf', bbox_inches='tight')
-            plt.show()
+            # plt.show()
     print('Completed figure1_illustration.py')
 
 if __name__ == '__main__':
