@@ -44,7 +44,7 @@ def main(n_samples=10, seed=0):
     cov_error_fir /= n_samples
             
     # open file
-    f = open("tables/batch_effect.tex", "w")
+    f = open("tables/batch_effect.txt", "w")
     for i_n in range(len(nn)):
         print("& \multicolumn{2}{c}{", f'{nn[i_n]}',"}", end="")
         f.write("& \multicolumn{2}{c}{")

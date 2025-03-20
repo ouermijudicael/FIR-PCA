@@ -16,6 +16,9 @@ from FIR_PCA import FIR_PCA
 
 from matplotlib import pyplot as plt
 
+from plotly.subplots import make_subplots
+import plotly.graph_objects as go
+
 
 import warnings
 
@@ -75,11 +78,24 @@ def main():
     robpca_H_od = np.setdiff1d( np.where(orthogonal_distances > od_cutoff), np.where(score_distances > score_cutoff) )
     robpca_H_sd_od = np.intersect1d( np.where(score_distances > score_cutoff), np.where(orthogonal_distances > od_cutoff) )
 
+    # fig = make_subplots(rows=1, cols=1, subplot_titles=('FIR-PCA', 'ROBPCA', 'FDB-PCA', 'C-PCA'))
+    # fig.add_trace(go.Scatter(x=fir_sd, y=fir_od, mode='markers', name='FIR-PCA', marker=dict(size=ms)), row=1, col=1)
+    # fig.show()
 
+    indices = np.array([39, 45, 116, 160])
+    indices2 = np.array([218, 52])
+    indices0 = np.concatenate((indices, indices2))
     plt.figure()
     plt.scatter(fir_sd, fir_od, color='k', s=ms,  label='FIR-PCA')
     plt.axhline(fir_od_cutoff, color='r', linestyle='--')
     plt.axvline(fir_sd_cuttoff, color='r', linestyle='--')
+    plt.scatter(fir_sd[indices], fir_od[indices], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(fir_sd[indices2], fir_od[indices2], color=c_od, s=ms, label='Selected Cars')
+    # for i in range(len(fir_sd)):
+    #     if fir_sd[i] > fir_sd_cuttoff or fir_od[i] > fir_od_cutoff:
+    #         plt.annotate(str(i+1), (fir_sd[i], fir_od[i]))
+    for i in indices0:
+        plt.annotate(str(i+1), (fir_sd[i], fir_od[i]))
     # plt.scatter(fir_sd[fir_H_sd], fir_od[fir_H_sd], c=c_sd, s=ms, label='FIR-PCA SD')
     # plt.scatter(fir_sd[fir_H_od], fir_od[fir_H_od], c=c_od, s=ms, label='FIR-PCA OD')
     # plt.scatter(fir_sd[fir_H_sd_od], fir_od[fir_H_sd_od], c=c_sd_od, s=ms, label='FIR-PCA SD & OD')
@@ -94,6 +110,10 @@ def main():
     plt.scatter(score_distances, orthogonal_distances, color='k', s=ms, label='ROBPCA')
     plt.axhline(od_cutoff, color='r', linestyle='--')
     plt.axvline(score_cutoff, color='r', linestyle='--')
+    for i in indices0:
+        plt.annotate(str(i+1), (score_distances[i], orthogonal_distances[i]))
+    plt.scatter(score_distances[indices], orthogonal_distances[indices], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(score_distances[indices2], orthogonal_distances[indices2], color=c_od, s=ms, label='Selected Cars')
     # plt.scatter(score_distances[robpca_H_sd], orthogonal_distances[robpca_H_sd], c=c_sd, s=ms, label='ROBPCA SD')
     # plt.scatter(score_distances[robpca_H_od], orthogonal_distances[robpca_H_od], c=c_od, s=ms, label='ROBPCA OD')
     # plt.scatter(score_distances[robpca_H_sd_od], orthogonal_distances[robpca_H_sd_od], c=c_sd_od, s=ms, label='ROBPCA SD & OD')
@@ -108,6 +128,10 @@ def main():
     plt.scatter(fdb_sd, fdb_od, color='k', label='FDB-PCA')
     plt.axhline(fdb_od_cuttoff, color='r', linestyle='--')
     plt.axvline(fdb_sd_cuttoff, color='r', linestyle='--')
+    for i in indices0:
+        plt.annotate(str(i+1), (fdb_sd[i], fdb_od[i]))
+    plt.scatter(fdb_sd[indices], fdb_od[indices], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(fdb_sd[indices2], fdb_od[indices2], color=c_od, s=ms, label='Selected Cars')
     # plt.scatter(fdb_sd[fdb_H_sd], fdb_od[fdb_H_sd], c=c_sd, s=ms, label='FDB-PCA SD')
     # plt.scatter(fdb_sd[fdb_H_od], fdb_od[fdb_H_od], c=c_od, s=ms, label='FDB-PCA OD')
     # plt.scatter(fdb_sd[fdb_H_sd_od], fdb_od[fdb_H_sd_od], c=c_sd_od, s=ms, label='FDB-PCA SD & OD')
@@ -120,8 +144,12 @@ def main():
 
     plt.figure()
     plt.scatter(pca_sd, pca_od, color='k', label='C-PCA')
+    for i in indices0:
+        plt.annotate(str(i+1), (pca_sd[i], pca_od[i]))
     plt.axhline(pca_od_cuttoff, color='r', linestyle='--')
     plt.axvline(pca_sd_cuttoff, color='r', linestyle='--')
+    plt.scatter(pca_sd[indices], pca_od[indices], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(pca_sd[indices2], pca_od[indices2], color=c_od, s=ms, label='Selected Cars')
     # plt.scatter(pca_sd[pca_H_sd], pca_od[pca_H_sd], c=c_sd, s=ms, label='C-PCA SD')
     # plt.scatter(pca_sd[pca_H_od], pca_od[pca_H_od], c=c_od, s=ms, label='C-PCA OD')
     # plt.scatter(pca_sd[pca_H_sd_od], pca_od[pca_H_sd_od], c=c_sd_od, s=ms, label='C-PCA SD & OD')
@@ -134,10 +162,12 @@ def main():
 
     # plot first two principal components
     plt.figure()
-    plt.scatter(fir_scores[:, 0], fir_scores[:, 1], c='k', s=ms, label='FIR-PCA')
-    plt.scatter(fir_scores[fir_H_sd, 0], fir_scores[fir_H_sd, 1], color=c_sd, s=ms, label='FIR-PCA SD')
-    plt.scatter(fir_scores[fir_H_od, 0], fir_scores[fir_H_od, 1], color=c_od, s=ms, label='FIR-PCA OD')
-    plt.scatter(fir_scores[fir_H_sd_od, 0], fir_scores[fir_H_sd_od, 1], color=c_sd_od, s=ms, label='FIR-PCA SD & OD')
+    plt.scatter(fir_scores[:, 0], fir_scores[:, 1], color='k', s=ms, label='FIR-PCA')
+    plt.scatter(fir_scores[indices, 0], fir_scores[indices, 1], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(fir_scores[indices2, 0], fir_scores[indices2, 1], color=c_od, s=ms, label='Selected Cars')
+    # plt.scatter(fir_scores[fir_H_sd, 0], fir_scores[fir_H_sd, 1], color=c_sd, s=ms, label='FIR-PCA SD')
+    # plt.scatter(fir_scores[fir_H_od, 0], fir_scores[fir_H_od, 1], color=c_od, s=ms, label='FIR-PCA OD')
+    # plt.scatter(fir_scores[fir_H_sd_od, 0], fir_scores[fir_H_sd_od, 1], color=c_sd_od, s=ms, label='FIR-PCA SD & OD')
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
@@ -146,10 +176,12 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(robpca_scores[:, 0], robpca_scores[:, 1], c='k', s=ms, label='ROBPCA')
-    plt.scatter(robpca_scores[robpca_H_sd, 0], robpca_scores[robpca_H_sd, 1], color=c_sd, s=ms, label='ROBPCA SD')
-    plt.scatter(robpca_scores[robpca_H_od, 0], robpca_scores[robpca_H_od, 1], color=c_od, s=ms, label='ROBPCA OD')
-    plt.scatter(robpca_scores[robpca_H_sd_od, 0], robpca_scores[robpca_H_sd_od, 1], color=c_sd_od, s=ms, label='ROBPCA SD & OD')
+    plt.scatter(robpca_scores[:, 0], robpca_scores[:, 1], color='k', s=ms, label='ROBPCA')
+    plt.scatter(robpca_scores[indices, 0], robpca_scores[indices, 1], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(robpca_scores[indices2, 0], robpca_scores[indices2, 1], color=c_od, s=ms, label='Selected Cars')
+    # plt.scatter(robpca_scores[robpca_H_sd, 0], robpca_scores[robpca_H_sd, 1], color=c_sd, s=ms, label='ROBPCA SD')
+    # plt.scatter(robpca_scores[robpca_H_od, 0], robpca_scores[robpca_H_od, 1], color=c_od, s=ms, label='ROBPCA OD')
+    # plt.scatter(robpca_scores[robpca_H_sd_od, 0], robpca_scores[robpca_H_sd_od, 1], color=c_sd_od, s=ms, label='ROBPCA SD & OD')
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
@@ -158,10 +190,12 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(fdb_scores[:, 0], fdb_scores[:, 1], c='k', s=ms, label='FDB-PCA')
-    plt.scatter(fdb_scores[fdb_H_sd, 0], fdb_scores[fdb_H_sd, 1], color=c_sd, s=ms, label='FDB-PCA SD')
-    plt.scatter(fdb_scores[fdb_H_od, 0], fdb_scores[fdb_H_od, 1], color=c_od, s=ms, label='FDB-PCA OD')
-    plt.scatter(fdb_scores[fdb_H_sd_od, 0], fdb_scores[fdb_H_sd_od, 1], color=c_sd_od, s=ms, label='FDB-PCA SD & OD')
+    plt.scatter(fdb_scores[:, 0], fdb_scores[:, 1], color='k', s=ms, label='FDB-PCA')
+    plt.scatter(fdb_scores[indices, 0], fdb_scores[indices, 1], color=c_sd_od, s=ms)
+    plt.scatter(fdb_scores[indices2, 0], fdb_scores[indices2, 1], color=c_od, s=ms)
+    # plt.scatter(fdb_scores[fdb_H_sd, 0], fdb_scores[fdb_H_sd, 1], color=c_sd, s=ms, label='FDB-PCA SD')
+    # plt.scatter(fdb_scores[fdb_H_od, 0], fdb_scores[fdb_H_od, 1], color=c_od, s=ms, label='FDB-PCA OD')
+    # plt.scatter(fdb_scores[fdb_H_sd_od, 0], fdb_scores[fdb_H_sd_od, 1], color=c_sd_od, s=ms, label='FDB-PCA SD & OD')
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
@@ -170,10 +204,12 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(pca_scores[:, 0], pca_scores[:, 1], c='k', s=ms, label='C-PCA')
-    plt.scatter(pca_scores[pca_H_sd, 0], pca_scores[pca_H_sd, 1], color=c_sd, s=ms, label='C-PCA SD')
-    plt.scatter(pca_scores[pca_H_od, 0], pca_scores[pca_H_od, 1], color=c_od, s=ms, label='C-PCA OD')
-    plt.scatter(pca_scores[pca_H_sd_od, 0], pca_scores[pca_H_sd_od, 1], color=c_sd_od, s=ms, label='C-PCA SD & OD')
+    plt.scatter(pca_scores[:, 0], pca_scores[:, 1], color='k', s=ms, label='C-PCA')
+    plt.scatter(pca_scores[indices, 0], pca_scores[indices, 1], color=c_sd_od, s=ms, label='Selected Cars')
+    plt.scatter(pca_scores[indices2, 0], pca_scores[indices2, 1], color=c_od, s=ms, label='Selected Cars')
+    # plt.scatter(pca_scores[pca_H_sd, 0], pca_scores[pca_H_sd, 1], color=c_sd, s=ms, label='C-PCA SD')
+    # plt.scatter(pca_scores[pca_H_od, 0], pca_scores[pca_H_od, 1], color=c_od, s=ms, label='C-PCA OD')
+    # plt.scatter(pca_scores[pca_H_sd_od, 0], pca_scores[pca_H_sd_od, 1], color=c_sd_od, s=ms, label='C-PCA SD & OD')
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()

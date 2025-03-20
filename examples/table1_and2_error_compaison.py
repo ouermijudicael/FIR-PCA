@@ -44,9 +44,11 @@ def compare_errors_helper(n_samples, n, p, out_coef, alpha_val, out_types):
             if out_type == 'clean': # will always be the first because hardcoded
                 X0, X, mu_hat, sigma_hat = generate_data(n, p, beta=out_coef, data_type='identity', outlier_type='cluster1')
                 X=X0
-            elif out_type == 'cluster1' or 'cluster':
+            elif out_type == 'cluster':
                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='cluster1')
             elif out_type == 'point':
+                print(f"n: {n}, p: {p}, out_coef: {out_coef}, alpha: {alpha_val}, out_type: {out_type}, sample: {i_s}")
+                
                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='point')
             elif out_type == 'radial':
                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='radial')
@@ -99,9 +101,7 @@ def compare_errors(names, nn, pp, outliers_coef, alpha_vals, n_samples=100):
     n_outlier_types = len(outliers_coef)
     n_data_types = len(nn)
 
-    out_types = ['clean', 'cluster1','radial', 'point']
-    # out_types = ['clean', 'cluster1']
-    # out_types = ['cluster']
+    out_types = ['clean', 'cluster','radial', 'point']
     n_methods = 3
 
     n_precent_outliers = len(outliers_coef)

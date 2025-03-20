@@ -40,7 +40,8 @@ def main():
     plt.xlabel('Singular Value Index')
     plt.ylabel('Singular Value')
     plt.title('Singular Values')
-    plt.show()
+    # plt.show()
+    plt.savefig('figures/octane_singular_values.pdf', bbox_inches='tight')
     non_zero_sv = np.sum(s > 1e-10)
     non_zero_sv = 5
     # project data on nonzeros singular vectors
@@ -76,10 +77,13 @@ def main():
 
 
 
-
+    indices = np.array([24, 25, 35, 36, 37, 38])
+    indices_fdb = np.array([24, 25, 35, 36, 37, 38])
+    indices_pca = np.array([25,37])
     plt.figure()
     plt.scatter(fir_sd, fir_od, label='FIR-PCA', c='k', s=ms)
-    for i in range(len(fir_sd)):
+    plt.scatter(fir_sd[indices], fir_od[indices], c=c_sd_od, s=ms)
+    for i in indices:
         if fir_sd[i] > fir_sd_cuttoff or fir_od[i] > fir_od_cutoff:
             txt = str(i+1)
             plt.annotate(txt, (fir_sd[i], fir_od[i]))
@@ -93,8 +97,9 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(score_distances, orthogonal_distances, label='ROBPCA', c='k', s=ms)
-    for i in range(len(score_distances)):
+    plt.scatter(score_distances, orthogonal_distances, label='DetMCD-PCA', color='k', s=ms)
+    plt.scatter(score_distances[indices], orthogonal_distances[indices], color=c_sd_od, s=ms)
+    for i in indices:
         if score_distances[i] > score_cutoff or orthogonal_distances[i] > od_cutoff:
             txt = str(i+1)
             plt.annotate(txt, (score_distances[i], orthogonal_distances[i]))
@@ -104,12 +109,13 @@ def main():
     plt.ylabel('Orthogonal Distance')
     # plt.legend()
     # save plot
-    plt.savefig('figures/octane_ROBPCA_outlier_map.pdf', bbox_inches='tight')
+    plt.savefig('figures/octane_DetMCD_PCA_outlier_map.pdf', bbox_inches='tight')
     # plt.show()  
 
     plt.figure()
-    plt.scatter(fdb_sd, fdb_od, label='FDB-PCA', c='k', s=ms)
-    for i in range(len(fdb_sd)):
+    plt.scatter(fdb_sd, fdb_od, label='FDB-PCA', color='k', s=ms)
+    plt.scatter(fdb_sd[indices_fdb], fdb_od[indices_fdb], color=c_sd_od, s=ms)
+    for i in indices_fdb:
         if fdb_sd[i] > fdb_sd_cuttoff or fdb_od[i] > fdb_od_cuttoff:
             txt = str(i)
             plt.annotate(txt, (fdb_sd[i], fdb_od[i]))
@@ -123,8 +129,9 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(pca_sd, pca_od, label='C-PCA', c='k', s=ms)
-    for i in range(len(pca_sd)):
+    plt.scatter(pca_sd, pca_od, label='C-PCA', color='k', s=ms)
+    plt.scatter(pca_sd[indices_pca], pca_od[indices_pca], color=c_sd_od, s=ms)
+    for i in indices_pca:
         if pca_sd[i] > pca_sd_cuttoff or pca_od[i] > pca_od_cutoff:
             txt = str(i+1)
             plt.annotate(txt, (pca_sd[i], pca_od[i]))
@@ -140,9 +147,10 @@ def main():
 
     plt.figure()
     plt.scatter(fir_scores[:,0], fir_scores[:,1], c='k', s=ms, label='FIR-PCA')
-    plt.scatter(fir_scores[fir_H_sd,0], fir_scores[fir_H_sd,1], c=c_sd, s=ms)
-    plt.scatter(fir_scores[fir_H_od,0], fir_scores[fir_H_od,1], c=c_od, s=ms)
-    plt.scatter(fir_scores[fir_H_sd_od,0], fir_scores[fir_H_sd_od,1], c=c_sd_od, s=ms)
+    plt.scatter(fir_scores[indices,0], fir_scores[indices,1], c=c_sd_od, s=ms)
+    # plt.scatter(fir_scores[fir_H_sd,0], fir_scores[fir_H_sd,1], c=c_sd, s=ms)
+    # plt.scatter(fir_scores[fir_H_od,0], fir_scores[fir_H_od,1], c=c_od, s=ms)
+    # plt.scatter(fir_scores[fir_H_sd_od,0], fir_scores[fir_H_sd_od,1], c=c_sd_od, s=ms)
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
@@ -151,22 +159,24 @@ def main():
     # plt.show()
 
     plt.figure()
-    plt.scatter(robpca_scores[:,0], robpca_scores[:,1], color='k', s=ms, label='ROBPCA')
-    plt.scatter(robpca_scores[robpca_H_sd,0], robpca_scores[robpca_H_sd,1], color=c_sd, s=ms)
-    plt.scatter(robpca_scores[robpca_H_od,0], robpca_scores[robpca_H_od,1], color=c_od, s=ms)
-    plt.scatter(robpca_scores[robpca_H_sd_od,0], robpca_scores[robpca_H_sd_od,1], color=c_sd_od, s=ms)
+    plt.scatter(robpca_scores[:,0], robpca_scores[:,1], color='k', s=ms, label='DetMCD-PCA')
+    plt.scatter(robpca_scores[indices,0], robpca_scores[indices,1], color=c_sd_od, s=ms)
+    # plt.scatter(robpca_scores[robpca_H_sd,0], robpca_scores[robpca_H_sd,1], color=c_sd, s=ms)
+    # plt.scatter(robpca_scores[robpca_H_od,0], robpca_scores[robpca_H_od,1], color=c_od, s=ms)
+    # plt.scatter(robpca_scores[robpca_H_sd_od,0], robpca_scores[robpca_H_sd_od,1], color=c_sd_od, s=ms)
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
     # save plot
-    plt.savefig('figures/octane_ROBPCA_first_two_principal_components.pdf', bbox_inches='tight')
+    plt.savefig('figures/octane_DetMCD_PCA_first_two_principal_components.pdf', bbox_inches='tight')
     # plt.show()
 
     plt.figure()
     plt.scatter(fdb_scores[:,0], fdb_scores[:,1], c='k', s=ms, label='FDB-PCA')
-    plt.scatter(fdb_scores[fdb_H_sd,0], fdb_scores[fdb_H_sd,1], c=c_sd, s=ms)
-    plt.scatter(fdb_scores[fdb_H_od,0], fdb_scores[fdb_H_od,1], c=c_od, s=ms)
-    plt.scatter(fdb_scores[fdb_H_sd_od,0], fdb_scores[fdb_H_sd_od,1], c=c_sd_od, s=ms)
+    plt.scatter(fdb_scores[indices_fdb,0], fdb_scores[indices_fdb,1], c=c_sd_od, s=ms)
+    # plt.scatter(fdb_scores[fdb_H_sd,0], fdb_scores[fdb_H_sd,1], c=c_sd, s=ms)
+    # plt.scatter(fdb_scores[fdb_H_od,0], fdb_scores[fdb_H_od,1], c=c_od, s=ms)
+    # plt.scatter(fdb_scores[fdb_H_sd_od,0], fdb_scores[fdb_H_sd_od,1], c=c_sd_od, s=ms)
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
@@ -176,9 +186,10 @@ def main():
 
     plt.figure()
     plt.scatter(pca_scores[:,0], pca_scores[:,1], c='k', s=ms, label='C-PCA')
-    plt.scatter(pca_scores[pca_H_sd,0], pca_scores[pca_H_sd,1], c=c_sd, s=ms)
-    plt.scatter(pca_scores[pca_H_od,0], pca_scores[pca_H_od,1], c=c_od, s=ms)
-    plt.scatter(pca_scores[pca_H_sd_od,0], pca_scores[pca_H_sd_od,1], c=c_sd_od, s=ms)
+    plt.scatter(pca_scores[indices_pca,0], pca_scores[indices_pca,1], c=c_sd_od, s=ms)
+    # plt.scatter(pca_scores[pca_H_sd,0], pca_scores[pca_H_sd,1], c=c_sd, s=ms)
+    # plt.scatter(pca_scores[pca_H_od,0], pca_scores[pca_H_od,1], c=c_od, s=ms)
+    # plt.scatter(pca_scores[pca_H_sd_od,0], pca_scores[pca_H_sd_od,1], c=c_sd_od, s=ms)
     plt.xlabel('PC1')
     plt.ylabel('PC2')
     # plt.legend()
