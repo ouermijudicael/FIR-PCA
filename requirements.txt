@@ -1,7 +1,8 @@
 numpy
 scipy
-sklearn
-robpy
 matplotlib
 joblib
 multiprocess
+scikit-learn
+scikit-fda
+robpy
