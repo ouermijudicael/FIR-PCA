@@ -2,8 +2,8 @@ from depth.multivariate import projection, L2
 import numpy as np
 
 
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
+# from plotly.subplots import make_subplots
+# import plotly.graph_objects as go
 
 from scipy.spatial.distance import cdist
 from scipy.stats import chi2, norm
@@ -73,28 +73,28 @@ def custom_projection_depth(x, data, num_directions=1000, seed=0):
 
     return depth_values
 
-# Example usage:
-def test_custom_projection_depth():
-    # Generate 2D random data
-    np.random.seed(0)
-    n = 100
-    data = np.random.randn(n, 2)
+# # Example usage:
+# def test_custom_projection_depth():
+#     # Generate 2D random data
+#     np.random.seed(0)
+#     n = 100
+#     data = np.random.randn(n, 2)
 
-    start = time.time()
-    cus_depths = custom_projection_depth(data, data, num_directions=1000, seed=0)
-    end = time.time()
-    print("Time taken for custom projection depth:", end - start)
+#     start = time.time()
+#     cus_depths = custom_projection_depth(data, data, num_directions=1000, seed=0)
+#     end = time.time()
+#     print("Time taken for custom projection depth:", end - start)
 
-    start = time.time()
-    depths = projection(data, data, solver='simplerandom', NRandom=1000)
-    end = time.time()
-    print("Time taken for projection depth:", end - start)
+#     start = time.time()
+#     depths = projection(data, data, solver='simplerandom', NRandom=1000)
+#     end = time.time()
+#     print("Time taken for projection depth:", end - start)
 
-    # plot the depths
-    fig = make_subplots(rows=1, cols=2)
-    fig.add_trace(go.Scatter(x=np.arange(n), y=depths, mode='markers', name='projection_depth'), row=1, col=1)
-    fig.add_trace(go.Scatter(x=np.arange(n), y=cus_depths, mode='markers', name='custom_projection_depth'), row=1, col=2)
-    fig.show()
+#     # plot the depths
+#     fig = make_subplots(rows=1, cols=2)
+#     fig.add_trace(go.Scatter(x=np.arange(n), y=depths, mode='markers', name='projection_depth'), row=1, col=1)
+#     fig.add_trace(go.Scatter(x=np.arange(n), y=cus_depths, mode='markers', name='custom_projection_depth'), row=1, col=2)
+#     fig.show()
 
 
 def FDB(X, alpha=0.75, depth="proj", reweighting=True):

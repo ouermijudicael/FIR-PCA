@@ -16,9 +16,6 @@ from FIR_PCA import FIR_PCA
 
 from matplotlib import pyplot as plt
 
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-
 
 import warnings
 
