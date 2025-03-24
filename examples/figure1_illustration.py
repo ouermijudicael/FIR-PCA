@@ -37,7 +37,7 @@ def main():
     H[:batch_size] = sorted_proj_indices[:batch_size]
     selected_idx = np.zeros(n, dtype=bool)
     selected_idx[sorted_proj_indices[:batch_size]] = True
-    dist = np.ones(n)*np.Inf
+    dist = np.ones(n)*np.inf
 
     plt.scatter(X0[:, 0], X0[:, 1], c='k', s=s_size, label='unselected')
     plt.scatter(X0[sorted_proj_indices[:batch_size], 0], X0[sorted_proj_indices[:batch_size], 1], c='b', s=s_size, label='selected')
@@ -68,12 +68,12 @@ def main():
         not_in_bbx[cache_idx] = (X0_pca[:, 0] < bbx[0, 0]) | (X0_pca[:, 0] > bbx[0, 1]) | (X0_pca[:, 1] < bbx[1, 0]) | (X0_pca[:, 1] > bbx[1, 1])
 
 
-        dist[not_in_bbx] = np.Inf
+        dist[not_in_bbx] = np.inf
         indices = np.argsort(dist)
         i2 = np.minimum(i+batch_size, h)
         H[i:i2] = indices[:i2-i]    
         selected_idx[indices[:batch_size]] = True
-        dist[indices[:batch_size]] = np.Inf
+        dist[indices[:batch_size]] = np.inf
         X0_pca2 = (ipca.transform(X0[indices[:i2-i],:]))
         if count < 2:
             plt.figure()

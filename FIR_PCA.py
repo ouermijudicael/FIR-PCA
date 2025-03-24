@@ -102,7 +102,7 @@ def FIR(Z, alpha = 0.75, reweighting = True, batch_size = None, plot_flag=False)
     sorted_proj_indices = np.argsort(proj_depths)[::-1]
     bbx = np.ones((p, 2))
     delta_bbx = np.zeros(p)
-    dist = np.ones(n)*np.Inf
+    dist = np.ones(n)*np.inf
 
     # sort in descending order
     H[:batch_size] = sorted_proj_indices[:batch_size]
@@ -138,13 +138,13 @@ def FIR(Z, alpha = 0.75, reweighting = True, batch_size = None, plot_flag=False)
         # #             not_in_bbx[k] = Z_pca[kk, j] < bbx[j, 0] or Z_pca[kk, j] > bbx[j, 1]
 
 
-        dist[not_in_bbx] = np.Inf
+        dist[not_in_bbx] = np.inf
         indices = np.argsort(dist)
         i2 = np.minimum(i+batch_size, h)
         H[i:i2] = indices[:i2-i]
         
         selected_idx[indices[:i2-i]] = True
-        dist[indices[:i2-i]] = np.Inf
+        dist[indices[:i2-i]] = np.inf
 
     T1 = Z[H, :] # trimmed data 
 

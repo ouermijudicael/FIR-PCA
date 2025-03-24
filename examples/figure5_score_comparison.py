@@ -7,9 +7,6 @@ from FDB import FDB_PCA
 # from sklearn.decomposition import PCA
 from C_PCA import C_PCA
 
-from plotly.subplots import make_subplots
-import plotly.graph_objects as go
-
 import matplotlib.pyplot as plt
 import sys
 import os

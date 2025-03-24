@@ -1,4 +1,4 @@
-from depth.multivariate import projection, L2
+# from depth.multivariate import projection, L2
 import numpy as np
 
 
