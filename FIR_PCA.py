@@ -173,13 +173,16 @@ def FIR(Z, alpha = 0.75, reweighting = True, batch_size = None, plot_flag=False)
     return mu_final, C_final, H        
 
 
-def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True):
+def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True, var_explained_coef=0.80):
     """
     Fast Iterative Robust Porbust Principal Component Analysis (FIR-PCA)
     
     Input:
     X: data matrix n x p n samples and p features
     alpha (Optional): percentage of inilier in data if known
+    batch_size (Optional): batch size for FIR
+    reweighting (Optional): reweighting flag
+    var_explained_coef (Optional): percentage of variance explained by the PCA
     
     Output:
     T: score of the robust PCA
@@ -188,6 +191,8 @@ def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True):
     P: loadings of the robust PCA
     sd: mahalanobis distance
     od: orthogonal distance
+    sd_cutoff: cutoff value for the score distances
+    od_cutoff: cutoff value for the orthogonal distances
     H1: indices of the inliers
 
     Example Usage:
@@ -209,9 +214,9 @@ def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True):
     explained_variance = d1[:r0]
     explained_variance_ratio = explained_variance.cumsum()/explained_variance.sum()
 
-    # get 90% explained variance
-    r_80 = np.argmax(explained_variance_ratio > 0.80) +1
-    print('FIR-PCA r_80:', r_80)
+    # get var_explained_coef explained variance
+    r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) +1
+    # print('FIR-PCA r_min_var_explained:', r_min_var_explained)
     # print('explained_variance_ratio:', explained_variance_ratio)    
 
     # compute mahalanobis distance
@@ -236,12 +241,12 @@ def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True):
     # loadings of the robust PCA
     P = V0[:, :r0] @ V1[:, :r0]
 
-    sd = np.sqrt(np.sum(np.square(T[:,:r_80])/d1[:r_80], axis=1)) # mahalanobis distance
+    sd = np.sqrt(np.sum(np.square(T[:,:r_min_var_explained])/d1[:r_min_var_explained], axis=1)) # mahalanobis distance
     od = np.zeros(n)
     for i in range(n):
-        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_80]@P[:,:r_80].T) # orthogonal distance
+        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_min_var_explained]@P[:,:r_min_var_explained].T) # orthogonal distance
 
-    sd_cutoff = get_score_distance_cutoff(0.975, r_80)
+    sd_cutoff = get_score_distance_cutoff(0.975, r_min_var_explained)
     od_cutoff = get_orthogonal_distance_cutoff(od)
 
     return T, m, D, P, sd, od, sd_cutoff, od_cutoff, H1

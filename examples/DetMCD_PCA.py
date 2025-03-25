@@ -11,7 +11,7 @@ def get_orthogonal_distance_cutoff(orthogonal_distances):
     return float(mcd.location + mcd.scale * norm.ppf(0.975)) ** (3 / 2)
 
 
-def DetMCD_PCA(X, alpha=0.75, reweighting=True):
+def DetMCD_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
     """
     Fast Iterative Robust Porbust Principal Component Analysis (FIR-PCA)
     
@@ -48,8 +48,10 @@ def DetMCD_PCA(X, alpha=0.75, reweighting=True):
 
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
-    r_80 = np.argmax(explained_variance_ratio > 0.9) + 1
+    r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) + 1
     # # resize mu1 to p
+    print(f'DetMCD_PCA: r0={r0}, r1={r1}, r_min_var_explained={r_min_var_explained}')
+    # r_min_var_explained = 4
     tmp = np.zeros(r0)
     tmp[:r1] = mu1
     mu1 = tmp
@@ -61,12 +63,12 @@ def DetMCD_PCA(X, alpha=0.75, reweighting=True):
     P = V0[:, :r0] @ V1[:, :r0]
 
 
-    sd = np.sqrt(np.sum(np.square(T[:,:r_80])/d1[:r_80], axis=1)) # mahalanobis distance
+    sd = np.sqrt(np.sum(np.square(T[:,:r_min_var_explained])/d1[:r_min_var_explained], axis=1)) # mahalanobis distance
     od = np.zeros(n)
     for i in range(n):
-        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_80]@P[:,:r_80].T) # orthogonal distance
+        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_min_var_explained]@P[:,:r_min_var_explained].T) # orthogonal distance
 
-    sd_cutoff = get_score_distance_cutoff(0.975, r_80)
+    sd_cutoff = get_score_distance_cutoff(0.975, r_min_var_explained)
     od_cutoff = get_orthogonal_distance_cutoff(od)
 
 

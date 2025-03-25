@@ -159,7 +159,7 @@ def FDB(X, alpha=0.75, depth="proj", reweighting=True):
 # projection(x, data)
 
 
-def FDB_PCA(X, alpha=0.75, reweighting=True):
+def FDB_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
     """
     Fast Iterative Robust Porbust Principal Component Analysis (FIR-PCA)
     
@@ -194,10 +194,11 @@ def FDB_PCA(X, alpha=0.75, reweighting=True):
 
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
-    r_80 = np.argmax(explained_variance_ratio > 0.95) + 1
-    print(f'explained_variance_ratio: {explained_variance_ratio}')
-    print(f'explained_variance: {explained_variance}')
-    # print(f'r_80: {r_80}')
+    r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) + 1
+    # print(f'explained_variance_ratio: {explained_variance_ratio}')
+    # print(f'explained_variance: {explained_variance}')
+
+    # print(f'r_min_var_explained: {r_min_var_explained}')
     # # compute mahalanobis distance
     # mu2 = np.mean(Z2[H1, :], axis=0)
     # C2 = np.cov(Z2[H1, :].T)
@@ -208,7 +209,7 @@ def FDB_PCA(X, alpha=0.75, reweighting=True):
     #     sd[i] = sp.spatial.distance.mahalanobis(Z2[i, :], mu2, C2_inv)
     # # resize mu1 to p
     tmp = np.zeros(r0)
-    tmp[:r1] = mu1
+    tmp[:r1] = mu1[:r1]
     mu1 = tmp
 
     T = (Z0- mu1) @ V1   # score of robust PCA
@@ -217,14 +218,15 @@ def FDB_PCA(X, alpha=0.75, reweighting=True):
     # loadings of the robust PCA
     P = V0[:, :r0] @ V1[:, :r0]
 
-    print(f'r_80: {r_80}')
+    print(f'FDB-PCA r_min_var_explained: {r_min_var_explained}')
+    # r_min_var_explained = 4
 
-    sd = np.sqrt(np.sum(np.square(T[:,:r_80])/d1[:r_80], axis=1)) # mahalanobis distance
+    sd = np.sqrt(np.sum(np.square(T[:,:r_min_var_explained])/d1[:r_min_var_explained], axis=1)) # mahalanobis distance
     od = np.zeros(n)
     for i in range(n):
-        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_80]@P[:,:r_80].T) # orthogonal distance
+        od[i] = np.linalg.norm(X[i,:] - m -  T[i, :r_min_var_explained]@P[:,:r_min_var_explained].T) # orthogonal distance
 
-    sd_cutoff = get_score_distance_cutoff(0.975, r_80)
+    sd_cutoff = get_score_distance_cutoff(0.975, r_min_var_explained)
     od_cutoff = get_orthogonal_distance_cutoff(od)
 
 
