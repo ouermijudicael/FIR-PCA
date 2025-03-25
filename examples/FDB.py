@@ -105,12 +105,14 @@ def FDB(X, alpha=0.75, depth="proj", reweighting=True):
     # data = np.random.multivariate_normal(np.zeros(p), np.eye(p), 100)
 
     h = int(np.maximum(n*alpha, 0.5*(n+p+1)))
-    if depth == "L2" or depth == "l2":
-        depths = L2(X, X)
-    else:
+    # if depth == "L2" or depth == "l2":
+        # depths = L2(X, X)
+    if depth == "proj":
         # depths = projection(X, X, solver='simplerandom', NRandom=1000)
         depths = custom_projection_depth(X, X, num_directions=1000, seed=0)
         # depths = pd.projection_depth(X, X)
+    else:
+        raise ValueError("Invalid depth function.")
 
     # sort in descending order
     indices = np.argsort(depths)[::-1]
@@ -192,8 +194,9 @@ def FDB_PCA(X, alpha=0.75, reweighting=True):
 
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
-    r_80 = np.argmax(explained_variance_ratio > 0.8) + 1
-    # print(f'explained_variance_ratio: {explained_variance_ratio}')
+    r_80 = np.argmax(explained_variance_ratio > 0.95) + 1
+    print(f'explained_variance_ratio: {explained_variance_ratio}')
+    print(f'explained_variance: {explained_variance}')
     # print(f'r_80: {r_80}')
     # # compute mahalanobis distance
     # mu2 = np.mean(Z2[H1, :], axis=0)
@@ -214,6 +217,7 @@ def FDB_PCA(X, alpha=0.75, reweighting=True):
     # loadings of the robust PCA
     P = V0[:, :r0] @ V1[:, :r0]
 
+    print(f'r_80: {r_80}')
 
     sd = np.sqrt(np.sum(np.square(T[:,:r_80])/d1[:r_80], axis=1)) # mahalanobis distance
     od = np.zeros(n)

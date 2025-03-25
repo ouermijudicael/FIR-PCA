@@ -1,6 +1,7 @@
 import skfda as skfda
 import sys
 import os
+import time
 # get and add path to the parent directory
 parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 sys.path.append(parent_dir)
@@ -47,12 +48,20 @@ def main():
     # project data on nonzeros singular vectors
     X_proj = X @ V[:non_zero_sv, :].T
 
-    pca_scores, pca_mean, pca_L, pca_P, pca_sd, pca_od, pca_sd_cuttoff, pca_od_cutoff = C_PCA(X_proj)
+    start = time.time_ns() * 1.e-9
+    for i in range(10):
+        pca_scores, pca_mean, pca_L, pca_P, pca_sd, pca_od, pca_sd_cuttoff, pca_od_cutoff = C_PCA(X_proj)
+    end = time.time_ns() * 1.e-9
+    print(f'Elapsed time for C_PCA: {(end - start)/10} seconds')
     pca_H_sd = np.intersect1d(np.where(pca_sd > pca_sd_cuttoff)[0], np.where(pca_od < pca_od_cutoff)[0])
     pca_H_od = np.intersect1d(np.where(pca_sd < pca_sd_cuttoff)[0], np.where(pca_od > pca_od_cutoff)[0])
     pca_H_sd_od = np.intersect1d(np.where(pca_sd > pca_sd_cuttoff)[0], np.where(pca_od > pca_od_cutoff)[0])
 
-    fir_scores,fir_M, fir_L, fir_P, fir_sd, fir_od, fir_sd_cuttoff, fir_od_cutoff, fir_rpca_H = FIR_PCA(X_proj, alpha=0.75)
+    start = time.time_ns() * 1.e-9
+    for i in range(10):
+        fir_scores,fir_M, fir_L, fir_P, fir_sd, fir_od, fir_sd_cuttoff, fir_od_cutoff, fir_rpca_H = FIR_PCA(X_proj, alpha=0.75)
+    end = time.time_ns() * 1.e-9
+    print(f'Elapsed time for FIR_PCA: {(end - start)/10} seconds')
     fir_H_sd = np.intersect1d(np.where(fir_sd > fir_sd_cuttoff)[0], np.where(fir_od < fir_od_cutoff)[0])
     fir_H_od = np.intersect1d(np.where(fir_sd < fir_sd_cuttoff)[0], np.where(fir_od > fir_od_cutoff)[0])
     fir_H_sd_od = np.intersect1d(np.where(fir_sd > fir_sd_cuttoff)[0], np.where(fir_od > fir_od_cutoff)[0])
@@ -62,14 +71,22 @@ def main():
     # score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(X_proj, return_distances=True)
     # robpca = ROBPCA(k_min_var_explained=0.98).fit(X_proj)
     # robpca_scores = robpca.transform(X_proj)
-    robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X_proj, alpha=0.75)  
-    
+    strat = time.time_ns() * 1.e-9
+    for i in range(10):
+        robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X_proj, alpha=0.75)  
+    end = time.time_ns() * 1.e-9
+    print(f'Elapsed time for DetMCD_PCA: {(end - strat)/10} seconds')
     # get indices where score_distances > score_cutoff and orthogonal_distances < od_cutoff
     robpca_H_sd = np.intersect1d(np.where(score_distances > score_cutoff)[0], np.where(orthogonal_distances < od_cutoff)[0])
     robpca_H_od = np.intersect1d(np.where(score_distances < score_cutoff)[0], np.where(orthogonal_distances > od_cutoff)[0])
     robpca_H_sd_od = np.intersect1d(np.where(score_distances > score_cutoff)[0], np.where(orthogonal_distances > od_cutoff)[0])
 
-    fdb_scores,fdb_M, fdb_L, fdb_P, fdb_sd, fdb_od, fdb_sd_cuttoff, fdb_od_cuttoff, fdb_H = FDB_PCA(X_proj, alpha=0.75)
+    start = time.time_ns() * 1.e-9
+    for i in range(10):
+        fdb_scores,fdb_M, fdb_L, fdb_P, fdb_sd, fdb_od, fdb_sd_cuttoff, fdb_od_cuttoff, fdb_H = FDB_PCA(X_proj, alpha=0.75)
+    end = time.time_ns() * 1.e-9
+    print(f'Elapsed time for FDB_PCA: {(end - start)/10} seconds')
+    
     fdb_H_sd = np.intersect1d(np.where(fdb_sd > fdb_sd_cuttoff)[0], np.where(fdb_od < fdb_od_cuttoff)[0])
     fdb_H_od = np.intersect1d(np.where(fdb_sd < fdb_sd_cuttoff)[0], np.where(fdb_od > fdb_od_cuttoff)[0])
     fdb_H_sd_od = np.intersect1d(np.where(fdb_sd > fdb_sd_cuttoff)[0], np.where(fdb_od > fdb_od_cuttoff)[0])

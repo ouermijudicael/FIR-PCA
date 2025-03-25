@@ -1,6 +1,6 @@
 import numpy as np
 import robpy as robpy
-
+import time
 from DetMCD_PCA import DetMCD_PCA
 
 from FDB import FDB_PCA
@@ -54,22 +54,39 @@ def main():
     alpha_val = 0.75
     r = 2
     # PCA
-    pca_scores, pca_M, pca_L, pca_P, pca_dist, pca_orth_dist, pca_dist_cutoff, pca_orth_dist_cutoff = C_PCA(X1)
+
+    start = time.time_ns()*1e-9
+    for i in range(10):
+        pca_scores, pca_M, pca_L, pca_P, pca_dist, pca_orth_dist, pca_dist_cutoff, pca_orth_dist_cutoff = C_PCA(X1)
+    end = time.time_ns()*1e-9
+    print(f'PCA time = {(end - start)/10}')
     X_pca = pca_scores[:,:r] @ pca_P[:, :r].T + pca_M
     pca_reconstruction_error = np.linalg.norm(X0 - X_pca, 'fro')/np.linalg.norm(X0, 'fro')
 
     # robPCA
-    robpca_scores, robpca_M, robpca_L, robpca_P, robpca_dist, robpca_orth_dist, robpca_dist_cutoff, robpca_orth_dist_cutoff = DetMCD_PCA(X1, alpha=alpha_val, reweighting=False)
+    start = time.time_ns()*1e-9
+    for i in range(10):
+        robpca_scores, robpca_M, robpca_L, robpca_P, robpca_dist, robpca_orth_dist, robpca_dist_cutoff, robpca_orth_dist_cutoff = DetMCD_PCA(X1, alpha=alpha_val, reweighting=False)
+    end = time.time_ns()*1e-9
+    print(f'DetMCD-PCA time = {(end - start)/10}')
     X_robpca = robpca_scores[:,:r] @ robpca_P[:, :r].T + robpca_M
     robpca_reconstruction_error = np.linalg.norm(X0 - X_robpca, 'fro')/np.linalg.norm(X0, 'fro')
 
     # FIR_PCA
-    fir_scores, fir_M, fir_L, fir_P, fir_dist, fir_orth_dist, fir_dist_cutoff, fir_orth_dist_cutoff, H = FIR_PCA(X1, alpha=alpha_val, reweighting=False)
+    start = time.time_ns()*1e-9
+    for i in range(10):
+        fir_scores, fir_M, fir_L, fir_P, fir_dist, fir_orth_dist, fir_dist_cutoff, fir_orth_dist_cutoff, H = FIR_PCA(X1, alpha=alpha_val, reweighting=False)
+    end = time.time_ns()*1e-9
+    print(f'FIR_PCA time = {(end - start)/10}')
     fir_reconstruction_error = np.linalg.norm(X0 - fir_M + fir_scores[:,:r] @ fir_P[:, :r].T, 'fro') / np.linalg.norm(X0, 'fro')
     X_fir = fir_scores[:,:r] @ fir_P[:, :r].T + fir_M
 
     # FDB_PCA
-    fdb_scores, fdb_M, fdb_L, fdb_P, fdb_dist, fdb_orth_dist, fdb_dist_cutoff, fdb_orth_dist_cutoff, H = FDB_PCA(X1, alpha=alpha_val, reweighting=False)
+    start  = time.time_ns()*1e-9
+    for i in range(10):
+        fdb_scores, fdb_M, fdb_L, fdb_P, fdb_dist, fdb_orth_dist, fdb_dist_cutoff, fdb_orth_dist_cutoff, H = FDB_PCA(X1, alpha=alpha_val, reweighting=False)
+    end = time.time.time_ns()*1e-9
+    print(f'FDB_PCA time = {(end - start)/10}')
     fdb_reconstruction_error = np.linalg.norm(X0 - fdb_M + fdb_scores[:,:r] @ fdb_P[:, :r].T, 'fro') / np.linalg.norm(X0, 'fro')
     X_fdb = fdb_scores[:,:r] @ fdb_P[:, :r].T + fdb_M
 

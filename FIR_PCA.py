@@ -211,7 +211,7 @@ def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True):
 
     # get 90% explained variance
     r_80 = np.argmax(explained_variance_ratio > 0.80) +1
-    # print('r_80:', r_80)
+    print('FIR-PCA r_80:', r_80)
     # print('explained_variance_ratio:', explained_variance_ratio)    
 
     # compute mahalanobis distance

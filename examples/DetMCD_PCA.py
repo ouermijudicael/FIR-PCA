@@ -48,7 +48,7 @@ def DetMCD_PCA(X, alpha=0.75, reweighting=True):
 
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
-    r_80 = np.argmax(explained_variance_ratio > 0.8) + 1
+    r_80 = np.argmax(explained_variance_ratio > 0.9) + 1
     # # resize mu1 to p
     tmp = np.zeros(r0)
     tmp[:r1] = mu1

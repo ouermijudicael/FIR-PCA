@@ -12,6 +12,7 @@ parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
 sys.path.append(parent_dir)
 from utils import create_figures_directory
 from FIR_PCA import FIR_PCA
+import time
 
 
 from matplotlib import pyplot as plt
@@ -51,17 +52,31 @@ def main():
 
     print(X.shape)
 
-    pca_scores, pca_m, pca_l, pca_p, pca_sd, pca_od, pca_sd_cuttoff, pca_od_cuttoff = C_PCA(X)
+    start = time.time_ns()* 1e-9
+    for i in range(10):
+        pca_scores, pca_m, pca_l, pca_p, pca_sd, pca_od, pca_sd_cuttoff, pca_od_cuttoff = C_PCA(X)
+    end = time.time_ns()* 1e-9
+    print(f'C-PCA took {(end - start)*0.1} seconds')
     pca_H_sd = np.setdiff1d( np.where(pca_sd > pca_sd_cuttoff), np.where(pca_od > pca_od_cuttoff) )
     pca_H_od = np.setdiff1d( np.where(pca_od > pca_od_cuttoff), np.where(pca_sd > pca_sd_cuttoff) )
     pca_H_sd_od = np.intersect1d( np.where(pca_sd > pca_sd_cuttoff), np.where(pca_od > pca_od_cuttoff) )
 
-    fdb_scores,fdb_M, fdb_L, fdb_P, fdb_sd, fdb_od, fdb_sd_cuttoff, fdb_od_cuttoff, fdb_H = FDB_PCA(X, alpha=0.75)
+    start = time.time_ns()* 1e-9
+    for i in range(10):
+        fdb_scores,fdb_M, fdb_L, fdb_P, fdb_sd, fdb_od, fdb_sd_cuttoff, fdb_od_cuttoff, fdb_H = FDB_PCA(X, alpha=0.75)
+    end = time.time_ns()* 1e-9
+    print(f'FDB-PCA took {(end - start)*.1} seconds')
     fdb_H_sd = np.setdiff1d( np.where(fdb_sd > fdb_sd_cuttoff), np.where(fdb_od > fdb_od_cuttoff) )
     fdb_H_od = np.setdiff1d( np.where(fdb_od > fdb_od_cuttoff), np.where(fdb_sd > fdb_sd_cuttoff) )
     fdb_H_sd_od = np.intersect1d( np.where(fdb_sd > fdb_sd_cuttoff), np.where(fdb_od > fdb_od_cuttoff) )
 
-    fir_scores,fir_M, fir_L, fir_P, fir_sd, fir_od, fir_sd_cuttoff, fir_od_cutoff, fir_H = FIR_PCA(X, alpha=0.75)
+    start = time.time_ns()* 1e-9
+    for i in range(10):
+        fir_scores,fir_M, fir_L, fir_P, fir_sd, fir_od, fir_sd_cuttoff, fir_od_cutoff, fir_H = FIR_PCA(X, alpha=0.75)
+    
+    end = time.time_ns()* 1e-9
+    print(f'FIR-PCA took {(end - start)*.1} seconds')
+
     fir_H_sd = np.setdiff1d( np.where(fir_sd > fir_sd_cuttoff), np.where(fir_od > fir_od_cutoff) )
     fir_H_od = np.setdiff1d( np.where(fir_od > fir_od_cutoff), np.where(fir_sd > fir_sd_cuttoff) )
     fir_H_sd_od = np.intersect1d( np.where(fir_sd > fir_sd_cuttoff), np.where(fir_od > fir_od_cutoff) )
@@ -69,8 +84,11 @@ def main():
     # robpca = ROBPCA().fit(scaled_data)
     # robpca_scores = robpca.transform(scaled_data)
     # score_distances, orthogonal_distances, score_cutoff, od_cutoff = robpca.plot_outlier_map(scaled_data, return_distances=True)
-    robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X, alpha=0.75)  
-
+    start = time.time_ns()* 1e-9
+    for i in range(10):
+        robpca_scores, robpca_M, robpca_L, robpca_P, score_distances, orthogonal_distances, score_cutoff, od_cutoff = DetMCD_PCA(X, alpha=0.75)  
+    end = time.time_ns()* 1e-9
+    print(f'DetMCD-PCA took {(end - start)*.1} seconds')
     robpca_H_sd = np.setdiff1d( np.where(score_distances > score_cutoff), np.where(orthogonal_distances > od_cutoff) )
     robpca_H_od = np.setdiff1d( np.where(orthogonal_distances > od_cutoff), np.where(score_distances > score_cutoff) )
     robpca_H_sd_od = np.intersect1d( np.where(score_distances > score_cutoff), np.where(orthogonal_distances > od_cutoff) )
@@ -118,7 +136,7 @@ def main():
     plt.ylabel('Orthogonal Distance')
     # plt.legend()
     # save plot
-    plt.savefig('figures/topgear_ROBPCA_outlier_map.pdf', bbox_inches='tight')
+    plt.savefig('figures/topgear_DetMCD_PCA_outlier_map.pdf', bbox_inches='tight')
     # plt.show()
 
     plt.figure()
@@ -183,7 +201,7 @@ def main():
     plt.ylabel('PC2')
     # plt.legend()
     # save plot
-    plt.savefig('figures/topgear_ROBPCA_scores.pdf', bbox_inches='tight')
+    plt.savefig('figures/topgear_DetMCD_PCA_scores.pdf', bbox_inches='tight')
     # plt.show()
 
     plt.figure()
