@@ -20,7 +20,7 @@ def C_PCA(X, var_explained_coef = 0.80):
 
     r_min_var_explained = np.where(explained_variance_ratio > var_explained_coef)[0][0] + 1
     sd = np.sqrt(np.sum(np.square(scores[:,:r_min_var_explained])/explained_variance[:r_min_var_explained], axis=1))
-    print(f'C_PCA: var_explained_coef={var_explained_coef}, r_min_var_explained={r_min_var_explained}')
+    # print(f'C_PCA: var_explained_coef={var_explained_coef}, r_min_var_explained={r_min_var_explained}')
     od = np.zeros(n)
     for i in range(n):
         od[i] = np.linalg.norm(X[i,:] - pca.mean_ - scores[i,:r_min_var_explained] @ pca.components_[:r_min_var_explained,:])

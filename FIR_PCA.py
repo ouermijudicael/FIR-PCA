@@ -130,12 +130,7 @@ def FIR(Z, alpha = 0.75, reweighting = True, batch_size = None, plot_flag=False)
 
         not_in_bbx = np.zeros(n, dtype=bool)
         not_in_bbx[unselected_idx] = (Z_pca[:, 0] < bbx[0, 0]) | (Z_pca[:, 0] > bbx[0, 1]) | (Z_pca[:, 1] < bbx[1, 0]) | (Z_pca[:, 1] > bbx[1, 1])
-        # # for j in range(2):
-        # #     kk = -1
-        # #     for k in range(n):
-        # #         if unselected_idx[k]:
-        # #             kk += 1
-        # #             not_in_bbx[k] = Z_pca[kk, j] < bbx[j, 0] or Z_pca[kk, j] > bbx[j, 1]
+        
 
 
         dist[not_in_bbx] = np.inf
@@ -216,19 +211,7 @@ def FIR_PCA(X, alpha=0.75, batch_size = None, reweighting=True, var_explained_co
 
     # get var_explained_coef explained variance
     r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) +1
-    # print('FIR-PCA r_min_var_explained:', r_min_var_explained)
-    # print('explained_variance_ratio:', explained_variance_ratio)    
 
-    # compute mahalanobis distance
-    # mu2 = np.mean(Z2[H1, :], axis=0)
-    # C2 = np.cov(Z2[H1, :].T)
-    # C2_inv = np.linalg.inv(C2)
-    # V2, d2, _ = np.linalg.svd(C2, full_matrices=False)
-    # sd = np.sqrt
-    # sd = np.zeros(n)
-    # for i in range(n):
-    #     sd[i] = sp.spatial.distance.mahalanobis(Z2[i, :], mu2, C2_inv)
-    #     sd[i] = np.sqrt( np.sum())
     # # resize mu1 to p
     tmp = np.zeros(r0)
     tmp[:r1] = mu1[:r1]

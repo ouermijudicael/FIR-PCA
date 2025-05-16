@@ -1,19 +1,7 @@
-# from depth.multivariate import projection, L2
 import numpy as np
-
-
-# from plotly.subplots import make_subplots
-# import plotly.graph_objects as go
-
 from scipy.spatial.distance import cdist
 from scipy.stats import chi2, norm
-import scipy as sp
-
-import time
-
 from robpy.univariate import UnivariateMCD
-
-
 import numpy as np
 
 def get_score_distance_cutoff(alpha, k):
@@ -73,44 +61,16 @@ def custom_projection_depth(x, data, num_directions=1000, seed=0):
 
     return depth_values
 
-# # Example usage:
-# def test_custom_projection_depth():
-#     # Generate 2D random data
-#     np.random.seed(0)
-#     n = 100
-#     data = np.random.randn(n, 2)
-
-#     start = time.time()
-#     cus_depths = custom_projection_depth(data, data, num_directions=1000, seed=0)
-#     end = time.time()
-#     print("Time taken for custom projection depth:", end - start)
-
-#     start = time.time()
-#     depths = projection(data, data, solver='simplerandom', NRandom=1000)
-#     end = time.time()
-#     print("Time taken for projection depth:", end - start)
-
-#     # plot the depths
-#     fig = make_subplots(rows=1, cols=2)
-#     fig.add_trace(go.Scatter(x=np.arange(n), y=depths, mode='markers', name='projection_depth'), row=1, col=1)
-#     fig.add_trace(go.Scatter(x=np.arange(n), y=cus_depths, mode='markers', name='custom_projection_depth'), row=1, col=2)
-#     fig.show()
-
 
 def FDB(X, alpha=0.75, depth="proj", reweighting=True):
     """
     Fast Depth Based method for location and outlier detection.
     """
     n, p = X.shape
-    # data = np.random.multivariate_normal(np.zeros(p), np.eye(p), 100)
 
     h = int(np.maximum(n*alpha, 0.5*(n+p+1)))
-    # if depth == "L2" or depth == "l2":
-        # depths = L2(X, X)
     if depth == "proj":
-        # depths = projection(X, X, solver='simplerandom', NRandom=1000)
         depths = custom_projection_depth(X, X, num_directions=1000, seed=0)
-        # depths = pd.projection_depth(X, X)
     else:
         raise ValueError("Invalid depth function.")
 
@@ -130,10 +90,7 @@ def FDB(X, alpha=0.75, depth="proj", reweighting=True):
         dist = cdist(X[H,:], mu.reshape(1, -1), 'mahalanobis', VI=inv_c1_sigma).flatten()
         w = dist**2 <= chi2.ppf(0.975, p)
         scale = np.sum(w)
-        # print(f'before w.shape: {w.shape}')
         mu_final  = np.sum(X[H, :]*w.reshape(-1, 1), axis=0) / scale
-        # print(f'after w.shape: {w.shape} mu_final.shape: {mu_final.shape}')
-        # multiply each row of X[H, :] by the corresponding element of w
         Xw = X[H, :] * w.reshape(-1, 1)
         sigma_final = 1/(scale-1) *  Xw.T @ Xw
     else:
@@ -142,21 +99,6 @@ def FDB(X, alpha=0.75, depth="proj", reweighting=True):
 
     return mu_final, sigma_final, H
 
-# import numpy as np
-
-# from depth.multivariate import *
-
-# np.random.seed(0)
-
-# mat1=[[1, 0, 0, 0, 0],[0, 2, 0, 0, 0],[0, 0, 3, 0, 0],[0, 0, 0, 2, 0],[0, 0, 0, 0, 1]]
-
-# mat2=[[1, 0, 0, 0, 0],[0, 1, 0, 0, 0],[0, 0, 1, 0, 0],[0, 0, 0, 1, 0],[0, 0, 0, 0, 1]]
-
-# x = np.random.multivariate_normal([1,1,1,1,1], mat2, 10)
-
-# data = np.random.multivariate_normal([0,0,0,0,0], mat1, 100)
-
-# projection(x, data)
 
 
 def FDB_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
@@ -195,19 +137,7 @@ def FDB_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
     explained_variance = d1[:r1]
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
     r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) + 1
-    # print(f'explained_variance_ratio: {explained_variance_ratio}')
-    # print(f'explained_variance: {explained_variance}')
-
-    # print(f'r_min_var_explained: {r_min_var_explained}')
-    # # compute mahalanobis distance
-    # mu2 = np.mean(Z2[H1, :], axis=0)
-    # C2 = np.cov(Z2[H1, :].T)
-    # C2_inv = np.linalg.inv(C2)
-    # V2, d2, _ = np.linalg.svd(C2, full_matrices=False)
-    # sd = np.zeros(n)
-    # for i in range(n):
-    #     sd[i] = sp.spatial.distance.mahalanobis(Z2[i, :], mu2, C2_inv)
-    # # resize mu1 to p
+    
     tmp = np.zeros(r0)
     tmp[:r1] = mu1[:r1]
     mu1 = tmp
@@ -217,9 +147,6 @@ def FDB_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
     D = d1[:r0] # eigenvalues of the covariance matrix
     # loadings of the robust PCA
     P = V0[:, :r0] @ V1[:, :r0]
-
-    print(f'FDB-PCA r_min_var_explained: {r_min_var_explained}')
-    # r_min_var_explained = 4
 
     sd = np.sqrt(np.sum(np.square(T[:,:r_min_var_explained])/d1[:r_min_var_explained], axis=1)) # mahalanobis distance
     od = np.zeros(n)

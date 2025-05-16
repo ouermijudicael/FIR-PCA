@@ -50,7 +50,7 @@ def DetMCD_PCA(X, alpha=0.75, reweighting=True, var_explained_coef=0.80):
     explained_variance_ratio = explained_variance.cumsum() / explained_variance.sum()
     r_min_var_explained = np.argmax(explained_variance_ratio > var_explained_coef) + 1
     # # resize mu1 to p
-    print(f'DetMCD_PCA: r0={r0}, r1={r1}, r_min_var_explained={r_min_var_explained}')
+    # print(f'DetMCD_PCA: r0={r0}, r1={r1}, r_min_var_explained={r_min_var_explained}')
     # r_min_var_explained = 4
     tmp = np.zeros(r0)
     tmp[:r1] = mu1
