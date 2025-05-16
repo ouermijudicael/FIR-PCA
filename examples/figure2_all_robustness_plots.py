@@ -1,8 +1,6 @@
 ## limitation of DetMCD and FDB
 import matlab.engine
-
 import numpy as np
-
 import robpy as robpy
 import os
 import sys
@@ -11,8 +9,6 @@ sys.path.append(parent_dir)
 from FIR_PCA import FIR
 from generate_data import generate_data
 
-# from plotly.subplots import make_subplots
-# import plotly.graph_objects as go
 
 import matplotlib.pyplot as plt
 import time
