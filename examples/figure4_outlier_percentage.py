@@ -6,7 +6,6 @@ import robpy as robpy
 import matplotlib.pyplot as plt
 from joblib import Parallel, delayed
 import multiprocessing
-
 from FDB import FDB
 import sys
 import os
@@ -47,7 +46,6 @@ def compare_noise_levels_helper(n_sample, n, p, alpha_val, outliers_coefs, out_t
                         X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='cluster1')
                     elif out_type == 'point':
                         X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='point')
-                        print(f'outliers: {out_coef} points')
                     elif out_type == 'radial':
                         X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='radial')
                     
@@ -113,45 +111,6 @@ def compare_noise_levels(names, nn, pp, outliers_coefs, alpah_vals, n_sample=100
             e_mu[i*nn_sample:(i+1)*nn_sample, :, :, :] = results[i][0]
             e_sigma_MSE[i*nn_sample:(i+1)*nn_sample, :, :, :] = results[i][1]
             e_sigma_KL[i*nn_sample:(i+1)*nn_sample, :, :, :] = results[i][2]
-
-        # for i_s in range(n_sample):
-        #     for i_out_type in range(len(out_types)):
-        #         out_type = out_types[i_out_type]
-        #         if out_type == 'cluster':
-        #             X0, X, mu_hat, sigma_hat = generate_data(n, p, beta=0.1, data_type='identity', outlier_type='cluster1')
-        #         for i_out in range(n_outliers):
-        #             out_coef = outliers_coefs[i_out]
-        #             if out_type == 'cluster' or out_type == 'cluster1':
-        #                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='cluster1')
-        #             elif out_type == 'point':
-        #                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='point')
-        #                 print(f'outliers: {out_coef} points')
-        #             elif out_type == 'radial':
-        #                 X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='radial')
-                    
-                
-        #             # DetMCD
-        #             det_mcd = robpy.covariance.DetMCD(alpha=alpha_val, reweighting=True).fit(X)
-        #             det_mcd_mu = det_mcd.location_
-        #             det_mcd_sigma = det_mcd.covariance_
-                    
-        #             # FDB
-        #             fdb_mu, fdb_sigma, fdb_H = FDB(X, alpha=alpha_val, depth='proj')
-                    
-        #             #fir
-        #             fird_location, fird_cov, fird_H = FIR(X, alpha=alpha_val)
-
-        #             e_mu[i_s, i_out_type, 0, i_out] = get_e_mu(mu_hat, det_mcd_mu)
-        #             e_sigma_MSE[i_s, i_out_type, 0, i_out] = get_e_sigma_MSE(sigma_hat, det_mcd_sigma)
-        #             e_sigma_KL[i_s, i_out_type, 0, i_out] = get_e_sigma_KL(sigma_hat, det_mcd_sigma)
-
-        #             e_mu[i_s, i_out_type, 1, i_out] = get_e_mu(mu_hat, fdb_mu)
-        #             e_sigma_MSE[i_s, i_out_type, 1, i_out] = get_e_sigma_MSE(sigma_hat, fdb_sigma)
-        #             e_sigma_KL[i_s, i_out_type, 1, i_out] = get_e_sigma_KL(sigma_hat, fdb_sigma)
-
-        #             e_mu[i_s, i_out_type, 2, i_out] = get_e_mu(mu_hat, fird_location)
-        #             e_sigma_MSE[i_s, i_out_type, 2, i_out] = get_e_sigma_MSE(sigma_hat, fird_cov)
-        #             e_sigma_KL[i_s, i_out_type, 2, i_out] = get_e_sigma_KL(sigma_hat, fird_cov)
 
         e_mean_mu = np.mean(e_mu, axis=0)
         e_mean_sigma_MSE = np.mean(e_sigma_MSE, axis=0)

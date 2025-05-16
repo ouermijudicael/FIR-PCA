@@ -5,7 +5,6 @@ import robpy as robpy
 import matplotlib.pyplot as plt
 from joblib import Parallel, delayed
 import multiprocessing
-
 from FDB import FDB
 import sys
 import os
@@ -16,9 +15,10 @@ from utils import generate_data, generate_data_with_outliers
 from FIR_PCA import FIR
 from utils import generate_data, create_figures_directory
 from utils import get_e_mu, get_e_sigma_MSE, get_e_sigma_KL
-
 import warnings
 warnings.filterwarnings("ignore")
+
+
 fs = 18 # text font size
 plt.rc('font', size=fs)  
 lw = 4 # line width
@@ -126,47 +126,7 @@ def compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=100):
             e_mu_std[i_p, :, :] = np.std(e_mu, axis=0)
             e_sigma_MSE_std[i_p, :, :] = np.std(e_sigma_MSE, axis=0)
             e_sigma_KL_std[i_p, :, :] = np.std(e_sigma_KL, axis=0)
-            # print(f'e_mu_mean: {e_mu_mean[i_p, :, :]}')
-
-            # for i_s in range(n_samples):
-            #     for i_out in range(len(out_types)):
-            #         out_type = out_types[i_out]
-            #         if out_type == 'cluster':
-            #             X0, X, mu_hat, sigma_hat = generate_data(n, p, beta=out_coef, data_type='identity', outlier_type='cluster1')
-            #         elif out_type == 'point':
-            #             X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='point')
-            #         elif out_type == 'radial':
-            #             X, indices = generate_data_with_outliers(X0, beta=out_coef, outlier_type='radial')
-                    
-            #         # DetMCD
-            #         det_mcd = robpy.covariance.DetMCD(alpha=alpha_val, reweighting=True).fit(X)
-            #         det_mcd_mu = det_mcd.location_
-            #         det_mcd_sigma = det_mcd.covariance_
-                    
-            #         # FDB
-            #         fdb_mu, fdb_sigma, fdb_H = FDB(X, alpha=alpha_val, depth='proj')
-                    
-            #         #fir
-            #         fir_location, fir_cov, fir_H = FIR(X, alpha=alpha_val)
-
-            #         e_mu[i_s, i_out, 0] = get_e_mu(mu_hat, det_mcd_mu)
-            #         e_sigma_MSE[i_s, i_out, 0] = get_e_sigma_MSE(sigma_hat, det_mcd_sigma)
-            #         e_sigma_KL[i_s, i_out, 0] = get_e_sigma_KL(sigma_hat, det_mcd_sigma)
-
-            #         e_mu[i_s, i_out, 1] = get_e_mu(mu_hat, fdb_mu)
-            #         e_sigma_MSE[i_s, i_out, 1] = get_e_sigma_MSE(sigma_hat, fdb_sigma)
-            #         e_sigma_KL[i_s, i_out, 1] = get_e_sigma_KL(sigma_hat, fdb_sigma)
-
-            #         e_mu[i_s, i_out, 2] = get_e_mu(mu_hat, fir_location)
-            #         e_sigma_MSE[i_s, i_out, 2] = get_e_sigma_MSE(sigma_hat, fir_cov)
-            #         e_sigma_KL[i_s, i_out, 2] = get_e_sigma_KL(sigma_hat, fir_cov)
-
-            # e_mu_mean[i_p, :, :] = np.mean(e_mu, axis=0)
-            # e_sigma_MSE_mean[i_p, :, :] = np.mean(e_sigma_MSE, axis=0)
-            # e_sigma_KL_mean[i_p, :, :] = np.mean(e_sigma_KL, axis=0)
-            # e_mu_std[i_p, :, :] = np.std(e_mu, axis=0)
-            # e_sigma_MSE_std[i_p, :, :] = np.std(e_sigma_MSE, axis=0)
-            # e_sigma_KL_std[i_p, :, :] = np.std(e_sigma_KL, axis=0)
+            
 
         lw =4
         for i_out in range(len(out_types)):

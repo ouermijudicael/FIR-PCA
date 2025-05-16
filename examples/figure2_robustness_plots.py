@@ -1,10 +1,16 @@
 ## limitation of DetMCD and FDB
 import numpy as np
 import robpy as robpy
+import sys
+import os
+# get and add path to the parent directory
+parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+sys.path.append(parent_dir)
 from FIR_PCA import FIR
 import matplotlib.pyplot as plt
 from FDB import FDB
 from utils import generate_data
+import time
 
 def main():
     fs = 22 # text font s   ize
@@ -85,5 +91,6 @@ def main():
             # plt.show()
 
 if __name__ == '__main__':
+    print('Running figure2_robustness_plots.py')
     main()
     print('Completed figure2_robustness_plots.py')

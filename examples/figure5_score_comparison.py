@@ -85,7 +85,7 @@ def main():
     start  = time.time_ns()*1e-9
     for i in range(10):
         fdb_scores, fdb_M, fdb_L, fdb_P, fdb_dist, fdb_orth_dist, fdb_dist_cutoff, fdb_orth_dist_cutoff, H = FDB_PCA(X1, alpha=alpha_val, reweighting=False)
-    end = time.time.time_ns()*1e-9
+    end = time.time_ns()*1e-9
     print(f'FDB_PCA time = {(end - start)/10}')
     fdb_reconstruction_error = np.linalg.norm(X0 - fdb_M + fdb_scores[:,:r] @ fdb_P[:, :r].T, 'fro') / np.linalg.norm(X0, 'fro')
     X_fdb = fdb_scores[:,:r] @ fdb_P[:, :r].T + fdb_M
