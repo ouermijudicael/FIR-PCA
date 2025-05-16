@@ -116,7 +116,7 @@ def compare_errors(names, nn, pp, outliers_coef, alpha_vals, n_samples=100):
         for i_n in range(n_data_types):
             n = nn[i_n]
             p = pp[i_n]
-            print("\multicolumn{5}{c}{",f'n: {n}, p: {p},  \% outliers: {out_coef*100}, $\\alpha$: {alpha_val}', "} & \multicolumn{7}{c}{} \\\\")
+            # print("\multicolumn{5}{c}{",f'n: {n}, p: {p},  \% outliers: {out_coef*100}, $\\alpha$: {alpha_val}', "} & \multicolumn{7}{c}{} \\\\")
             # e_mu = np.zeros((n_samples, len(out_types), n_methods))
             # e_sigma_MSE = np.zeros((n_samples, len(out_types), n_methods))
             # e_sigma_KL = np.zeros((n_samples, len(out_types), n_methods))

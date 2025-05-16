@@ -24,11 +24,13 @@ figure2_robustness_plots.main()
 # figure3_errors_varying_p.main(n_samples, seed) # takes a long time about 45 min on my machine(10 cores)
 # figure4_outlier_percentage.main(n_samples, seed) # takes a long time about 2 min on my machine(10 cores)
 figure5_score_comparison.main() 
-# figure6_performance.main(100, seed) # takes a long time about xyz on my machine
+# figure6_performance.main(100, seed) # takes a long time (many hours)
 
 figure7_octane.main()
 figure8_ForgedBankNotes.main()
 figure9_topGear.main()
-n_samples = 10
-# table1_and2_error_compaison.main(n_samples, seed) # takes a long time
-# table3_batch_size.main(n_samples, seed) # takes a long time
+# table1_and2_error_compaison.main(n_samples, seed) # takes a long time (many hours)
+# table3_batch_size.main(n_samples, seed) # takes a long time (many hours)
+# print("All tables are saved in the tables directory")
+print("All figures are saved in the figures directory")
+
