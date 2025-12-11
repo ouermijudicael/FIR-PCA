@@ -17,7 +17,7 @@ def main():
     plt.rc('font', size=fs)  
 
     np.random.seed(0)
-    n= 100
+    n= 1000
     p_vals = [10]       
     for p in p_vals:
         X0, X1, _, _, H1 = generate_data(n, p, beta=0.4, outlier_type='point', outliers_indices_flag=True)
@@ -26,8 +26,8 @@ def main():
         # FDB
         fdb_mu, fdb_sigma, fdb_H = FDB(X1, alpha=0.5, depth='proj')
         fdb_mu2, fdb_sigma2, fdb_H2 = FDB(X2, alpha=0.5, depth='proj')
-        fir_mu,firb_cov, fir_H = FIR(X1, alpha=0.6)
-        fir_mu2, fir_cov2, fir_H2 = FIR(X2, alpha=0.6)
+        fir_mu,firb_cov, fir_H = FIR(X1, alpha=0.5)
+        fir_mu2, fir_cov2, fir_H2 = FIR(X2, alpha=0.5)
         # fir_mu, fir_cov, fir_H = iterative_downsampling(X1, alpha=0.5)
         # fir_mu2, fir_cov2, fir_H2 = iterative_downsampling(X2, alpha=0.5)
         

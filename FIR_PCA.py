@@ -804,7 +804,7 @@ def FIR(Z, alpha=0.75, reweighting=True, batch_size=None, plot_flag=False):
     # H[:int(0.5*k)] = sorted_indices[:int(0.5*k)]
     # selected_idx[sorted_indices[:int(0.5*k)]] = True
 
-    mu0, cov0, H0 = iterative_downsampling(Z, alpha=alpha, max_iter=1000, plot_flag=False)
+    mu0, C0, H0 = iterative_downsampling(Z, alpha=alpha, max_iter=1000, plot_flag=False)
     k = len(H0)
     H[:k] = H0
     selected_idx[H0] = True
@@ -816,14 +816,15 @@ def FIR(Z, alpha=0.75, reweighting=True, batch_size=None, plot_flag=False):
     # project data onto the sketch
     U, s, VT = np.linalg.svd(B, full_matrices=False)
     Z_pca = Z @ VT.T
-    w = power_weights(s, gamma=0.5)
+    gamma_par = 2.0
+    w = power_weights(s, gamma=gamma_par)
     # w = truncated_power_weights(s, threshold=1.0e-1, gamma=1)
     # w = combined_weights(s, alpha=0.9, gamma=1.0, delta=1.0)
     # w = truncated_weights(s, r=p-1, c=1.0e-1)
     # w = softmax_weights(s, beta=1.0)
     unselected_idx = np.logical_not(selected_idx)
     # weight the projected data
-    dist[unselected_idx] = np.matmul((((Z_pca[unselected_idx, :])**2)*w), 1./(s**2 + 1.e-10))
+    dist[unselected_idx] = np.matmul((((Z_pca[unselected_idx, :])**2)), 1./(s**2 + 1.e-10))
     # dist_top_2_eigen[unselected_idx] = np.matmul((((Z_pca[unselected_idx, 1:3])**2)*w[1:3]), 1./(s[1:3]**2 + 1.e-10))
 
     # for i in range(int(0.5*k), h):
@@ -841,14 +842,14 @@ def FIR(Z, alpha=0.75, reweighting=True, batch_size=None, plot_flag=False):
         # print("s[0]:", s[0])
         # print("s:", s)
         # gamma_par = np.min([1000*s[8]/s[0], 1])
-        w = power_weights(s, gamma=0.5)
+        w = power_weights(s, gamma=gamma_par)
         # w = truncated_power_weights(s, threshold=1.0e-1, gamma=1)
         # w = truncated_weights(s, r=p-1, c=1.0e-1)
         # w = softmax_weights(s, beta=1.0)
         # w = combined_weights(s, alpha=0.9, gamma=1.0, delta=1.0)
         unselected_idx = np.logical_not(selected_idx)
         # weight the projected data
-        dist[unselected_idx] = np.matmul((((Z_pca[unselected_idx, :])**2)*w), 1./(s**2 + 1.e-10))
+        dist[unselected_idx] = np.matmul((((Z_pca[unselected_idx, :])**2)), 1./(s**2 + 1.e-10))
         B = B_iter
     T1 = Z[H, :] # trimmed data
     # T1 = T1 @ eigvecs.T # project back to original space
