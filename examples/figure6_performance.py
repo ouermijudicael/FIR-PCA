@@ -5,7 +5,7 @@ import matplotlib.pyplot as plt
 import sys
 import os
 # get and add path to the parent directory
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from utils import generate_data, create_figures_directory
 from FDB import FDB
@@ -186,14 +186,14 @@ def compare_performance_n(names, nn, pp, outliers_coef, alpha_val, n_samples=100
             plt.legend()
             plt.savefig(f'figures/Time_n_{names[i_p]}_{nn[i_n]}_{out_type}_p{p}.pdf', bbox_inches='tight')
 
-def main(n_samples=10, seed=0):
+def main(n_samples=1, seed=0):
     print("Running main figure6_performance.py")
     np.random.seed(seed)
     # comparison of different methods for different datasets  performance p #
     # #-----------------------------------------------------------------------#
     names = ["A"]
     nn = [1000]
-    pp = [25, 50, 75, 100, 125, 150, 175, 200]
+    pp = [25, 50]#, 75, 100, 125, 150, 175, 200]
     outliers_coef = [0.15]
     alpha_val = 0.75
     compare_performance_p(names, nn, pp, outliers_coef, alpha_val, n_samples=n_samples)
@@ -201,7 +201,7 @@ def main(n_samples=10, seed=0):
     # # comparison of different methods for different datasets  performance n #
     # #-----------------------------------------------------------------------#
     names = ["A"]
-    nn = [500, 750, 1000, 1250, 1500, 1750, 2000]
+    nn = [500, 750, 1000]#, 1250, 1500, 1750, 2000]
     # pp = [5]
     outliers_coef = [0.10]
     alpha_val = 0.75

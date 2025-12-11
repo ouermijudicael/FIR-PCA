@@ -4,9 +4,9 @@ import robpy as robpy
 import sys
 import os
 # get and add path to the parent directory
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
-from FIR_PCA import FIR
+from FIR_PCA import FIR, iterative_downsampling
 import matplotlib.pyplot as plt
 from FDB import FDB
 from utils import generate_data
@@ -17,7 +17,7 @@ def main():
     plt.rc('font', size=fs)  
 
     np.random.seed(0)
-    n= 1000
+    n= 100
     p_vals = [10]       
     for p in p_vals:
         X0, X1, _, _, H1 = generate_data(n, p, beta=0.4, outlier_type='point', outliers_indices_flag=True)
@@ -26,8 +26,10 @@ def main():
         # FDB
         fdb_mu, fdb_sigma, fdb_H = FDB(X1, alpha=0.5, depth='proj')
         fdb_mu2, fdb_sigma2, fdb_H2 = FDB(X2, alpha=0.5, depth='proj')
-        fir_mu,firb_cov, fir_H = FIR(X1, alpha=0.5)
-        fir_mu2, fir_cov2, fir_H2 = FIR(X2, alpha=0.5)
+        fir_mu,firb_cov, fir_H = FIR(X1, alpha=0.6)
+        fir_mu2, fir_cov2, fir_H2 = FIR(X2, alpha=0.6)
+        # fir_mu, fir_cov, fir_H = iterative_downsampling(X1, alpha=0.5)
+        # fir_mu2, fir_cov2, fir_H2 = iterative_downsampling(X2, alpha=0.5)
         
         c_DetMCD = np.array([44,123,182]) / 255
         c_fir = np.array([253,174,97]) / 255

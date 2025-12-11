@@ -9,7 +9,7 @@ from FDB import FDB
 import sys
 import os
 # get and add path to the parent directory
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from utils import generate_data, generate_data_with_outliers
 from FIR_PCA import FIR
@@ -265,13 +265,14 @@ def compare_errors(names, nn, pp, outliers_coef, alpha_vals, n_samples=100):
 
 
 
-def main(n_samples=10, seed=0):
+def main(n_samples=20, seed=0):
     print('Running table1_and2_error_compaison.py')
     np.random.seed(seed)
     # comaparison of different methods for different outlier levels with specific datasets #
     #--------------------------------------------------------------------------------------#
     names = [ "A", "B", "C", "D"]
     n_vals = [200, 300, 400, 1000] #[100, 400]
+    # n_vals = [200, 300]#, 1000, 5000] #[100, 400]
     p_vals = [5, 20, 50, 100]#[5, 20]
     out_coefs_vals = [0.10, 0.4 ]
     alpha_vals_vals = [0.75, 0.5]
