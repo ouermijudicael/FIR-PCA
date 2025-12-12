@@ -9,7 +9,7 @@ from FDB import FDB
 import sys
 import os
 # get and add path to the parent directory
-parent_dir = os.path.abspath(os.path.join(os.getcwd(), os.pardir))
+parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.append(parent_dir)
 from utils import generate_data, generate_data_with_outliers
 from FIR_PCA import FIR
@@ -28,7 +28,7 @@ c_fir = np.array([253,174,97]) / 255
 c_fdb = np.array([171,217,233]) / 255
 c_other = np.array([215,25,28]) / 255
 
-
+file_name_end= "_w_power_0_5" # default is empty string ""
 
 def compare_p_helper(n_samples, outlier_types, outlier_coef, alpha_val, n, p):
     """
@@ -142,7 +142,7 @@ def compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=100):
             ax.set_xlabel('p')
             ax.set_ylabel('Location Error')
             ax.legend()
-            plt.savefig(f'figures/LocationError_p_{name}_{out_types[i_out]}_n{n}.pdf', bbox_inches='tight')
+            plt.savefig(f'figures/LocationError_p_{name}_{out_types[i_out]}_n{n}{file_name_end}.pdf', bbox_inches='tight')
 
             fig, ax = plt.subplots(1)
             ax.plot(pp, e_sigma_MSE_mean[:, i_out, 0], label='DetMCD', color=c_DetMCD, lw=lw)
@@ -154,7 +154,7 @@ def compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=100):
             ax.set_xlabel('p')
             ax.set_ylabel('Covariance Error')
             ax.legend()
-            plt.savefig(f'figures/CovError_p_{name}_{out_types[i_out]}_n{n}.pdf', bbox_inches="tight")
+            plt.savefig(f'figures/CovError_p_{name}_{out_types[i_out]}_n{n}{file_name_end}.pdf', bbox_inches="tight")
 
             fig, ax = plt.subplots(1)
             ax.plot(pp, e_sigma_KL_mean[:, i_out, 0], label='DetMCD', color=c_DetMCD, lw=lw)
@@ -166,14 +166,14 @@ def compare_p(names, nn, pp, outliers_coef, alpha_val, n_samples=100):
             ax.set_xlabel('p')
             ax.set_ylabel('KL Divergence')
             ax.legend()
-            plt.savefig(f'figures/KLDivergence_p_{name}_{out_types[i_out]}_n{n}.pdf', bbox_inches="tight")
+            plt.savefig(f'figures/KLDivergence_p_{name}_{out_types[i_out]}_n{n}{file_name_end}.pdf', bbox_inches="tight")
             # plt.show()
 
 def main(n_samples=10, seed=10):
     print("Running figure3_errors_varying_p.py")
     np.random.seed(seed)
     names = ["A"]
-    nn = [1000]
+    nn = [2000]
     pp = [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
     outliers_coef = [0.40]
     alpha_val = 0.50
